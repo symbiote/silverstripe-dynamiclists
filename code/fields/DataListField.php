@@ -34,8 +34,9 @@ class DataListField extends DropdownField {
 		if (is_string($source)){
 			// it should be the name of a list, lets get all its contents
 			$dataList = DataObject::get_one('DataList', '"Title" = \''.Convert::raw2sql($source).'\'');
+			$source = array();
 			if ($dataList) {
-				$source = array();
+				
 				$items = $dataList->Items();
 				foreach ($items as $item) {
 					$source[$item->Title] = $item->Title;
@@ -46,4 +47,3 @@ class DataListField extends DropdownField {
 		parent::__construct($name, $title, $source, $value, $form, $emptyString);
 	}
 }
-?>
