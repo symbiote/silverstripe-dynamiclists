@@ -36,7 +36,6 @@ class DataListField extends DropdownField {
 			$dataList = DataObject::get_one('DataList', '"Title" = \''.Convert::raw2sql($source).'\'');
 			$source = array();
 			if ($dataList) {
-				
 				$items = $dataList->Items();
 				foreach ($items as $item) {
 					$source[$item->Title] = $item->Title;
