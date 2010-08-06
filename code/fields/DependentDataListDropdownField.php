@@ -77,8 +77,8 @@ class DependentDataListDropdownField extends DataListField {
 		 */
 		var showList = function(name, value) {
 			// need to create all the options
+			me.empty();
 			if (listOptions[name]) {
-				me.empty();
 				for (var k in listOptions[name]) {
 					var sel = '';
 					if (k == value) {
