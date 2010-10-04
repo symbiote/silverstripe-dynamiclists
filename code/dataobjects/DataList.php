@@ -29,7 +29,7 @@ OF SUCH DAMAGE.
  */
 class DataList extends DataObject {
     public static $db = array(
-		'Title' => 'Varchar',
+		'Title' => 'Varchar(128)',
 	);
 
 	public static $has_many = array(
