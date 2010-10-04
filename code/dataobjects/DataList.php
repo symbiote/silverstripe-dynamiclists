@@ -57,7 +57,6 @@ class DataList extends DataObject {
 				$ctf->setPermissions(TableListField::permissions_for_object($component));
 				$fields->addFieldToTab('Root.Items', $ctf);
 			}
-			
 		}
 		return $fields;
 	}

@@ -66,7 +66,9 @@ class DependentDataListDropdownField extends DataListField {
 		$listItems = array();
 		foreach ($this->dependentLists as $listTitle) {
 			$list = DataList::get_data_list($listTitle);
-			$listItems[$listTitle] = $list->Items()->map('Title', 'Title');
+			if ($list) {
+				$listItems[$listTitle] = $list->Items()->map('Title', 'Title');
+			}
 		}
 
 		$jsonStruct = Convert::raw2json($listItems);
