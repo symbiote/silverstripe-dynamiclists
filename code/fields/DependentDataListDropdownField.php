@@ -57,7 +57,11 @@ class DependentDataListDropdownField extends DataListField {
 			}
 		}
 
-		$dependentName = substr($this->dependentOn, strrpos($this->dependentOn, '.') + 1);
+		$dependentName = $this->dependentOn;
+		if (strpos('.', $dependentName)) {
+			$dependentName = substr($dependentName, strrpos($dependentName, '.') + 1);
+		}
+		
 
 		$listItems = array();
 		foreach ($this->dependentLists as $listTitle) {
@@ -77,7 +81,6 @@ class DependentDataListDropdownField extends DataListField {
 		 */
 		var showList = function(name, value) {
 			// need to create all the options
-			me.empty();
 			if (listOptions[name]) {
 				for (var k in listOptions[name]) {
 					var sel = '';
@@ -92,6 +95,7 @@ class DependentDataListDropdownField extends DataListField {
 		$('select[name=$dependentName]').change(function () {
 			// when this list changes, make sure to update the contained list items
 			var _this = $(this);
+			me.empty();
 			if (_this.val()) {
 				showList(_this.val());
 			}
