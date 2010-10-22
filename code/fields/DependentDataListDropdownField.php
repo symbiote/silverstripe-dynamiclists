@@ -38,11 +38,11 @@ class DependentDataListDropdownField extends DataListField {
 	 */
 	protected $dependentOn;
 
-	
+
 	public function  __construct($name, $title = null, $dataLists, $dependentOn = '', $value = "", $form = null, $emptyString = null) {
 		$this->dependentLists = $dataLists;
 		$this->dependentOn = $dependentOn;
-		
+
 		parent::__construct($name, $title, array(), $value, $form, $emptyString);
 	}
 
@@ -61,9 +61,15 @@ class DependentDataListDropdownField extends DataListField {
 		if (strpos('.', $dependentName)) {
 			$dependentName = substr($dependentName, strrpos($dependentName, '.') + 1);
 		}
-		
 
 		$listItems = array();
+		if (is_string($this->dependentLists)) {
+			$list = DataList::get_data_list($this->dependentLists);
+			if ($list) {
+				$this->dependentLists = $list->Items()->map('Title', 'Title');
+			}
+		}
+
 		foreach ($this->dependentLists as $listTitle) {
 			$list = DataList::get_data_list($listTitle);
 			if ($list) {
