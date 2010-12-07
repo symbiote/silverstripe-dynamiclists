@@ -32,7 +32,19 @@ class DataListAdmin extends ModelAdmin {
 	static $model_importers = array(
 		'DataList' => 'DataListCsvLoader',
 	);
+	
+	public static $collection_controller_class = "DataListAdmin_Controller";
 
+}
+
+class DataListAdmin_Controller extends ModelAdmin_CollectionController {
+	public function ImportForm() {
+		$form = parent::ImportForm();
+		
+		$form->Fields()->replaceField('EmptyBeforeImport', new CheckboxField('EmptyBeforeImport', 'Clear Database before import', false));
+		
+		return $form;
+	}
 }
 
 class DataListCsvLoader extends CsvBulkLoader {
