@@ -58,7 +58,8 @@ class DependentDataListDropdownField extends DataListField {
 		}
 
 		$dependentName = $this->dependentOn;
-		if (strpos('.', $dependentName)) {
+		
+		if (strpos($dependentName, '.')) {
 			$dependentName = substr($dependentName, strrpos($dependentName, '.') + 1);
 		}
 
