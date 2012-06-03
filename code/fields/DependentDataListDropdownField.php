@@ -51,7 +51,7 @@ class DependentDataListDropdownField extends DataListField {
 		$dependScript = '';
 		// lets find out if we've got an existing selection in our dependon list
 		if ($this->form) {
-			$dependent = $this->form->Fields()->fieldByName($this->dependentOn);
+			$dependent = $this->form->Fields()->dataFieldByName($this->dependentOn);
 			if ($dependent && $dependent->Value()) {
 				$dependScript = "showList('".Convert::raw2js($dependent->Value())."', '".Convert::raw2js($this->value)."');";
 			}
