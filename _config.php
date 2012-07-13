@@ -1,7 +1,7 @@
 <?php
 
-define('DATALIST_MODULE', 'datalists');
+define('DYNAMICLIST_MODULE', 'dynamiclists');
 
-if (basename(dirname(__FILE__)) != DATALIST_MODULE) {
-	throw new Exception(DATALIST_MODULE . ' module not installed in correct directory');
+if (basename(dirname(__FILE__)) != DYNAMICLIST_MODULE) {
+	throw new Exception(DYNAMICLIST_MODULE . ' module not installed in correct directory');
 }
