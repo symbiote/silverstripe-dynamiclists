@@ -5,6 +5,7 @@ Requirements
 --------
 
 SilverStripe 3.0
+[SortableGridField](https://github.com/UndefinedOffset/SortableGridField)
 
 Overview
 --------
