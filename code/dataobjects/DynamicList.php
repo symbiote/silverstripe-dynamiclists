@@ -18,34 +18,9 @@ class DynamicList extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		
-		$fields->removeByName('Items');
-
-		if ($this->ID) {
-			foreach($this->has_many() as $relationship => $component) {
-				$relationshipFields = singleton($component)->summaryFields();
-				$foreignKey = $this->getRemoteJoinField($relationship);
-
-				$gridFieldConfig = GridFieldConfig::create()->addComponents(
-					new GridFieldAddNewButton(),
-					new GridFieldFilterHeader(),
-					new GridFieldSortableHeader(),
-					new GridFieldDataColumns(),
-					new GridFieldPaginator(15),
-					new GridFieldEditButton(),
-					new GridFieldDeleteAction(),
-					new GridFieldDetailForm(),
-					new GridFieldSortableRows('Sort')
-				);
-
-				$gridField = new GridField($relationship, $relationship, $this->{$relationship}(), $gridFieldConfig);
-				$columns = $gridField->getConfig()->getComponentByType('GridFieldDataColumns');
-				$columns->setDisplayFields($relationshipFields);
-
-				$fields->addFieldToTab('Root.Main', new HeaderField('ItemsHeader', 'List Items'));
-				$fields->addFieldToTab('Root.Main', $gridField);
-			}
-		}
+		$conf=GridFieldConfig_RelationEditor::create(10);
+		$conf->addComponent(new GridFieldSortableRows('Sort'));	
+		$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
 		return $fields;
 	}
 

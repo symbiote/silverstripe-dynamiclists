@@ -38,8 +38,7 @@ class DynamicListItem extends DataObject {
 	);
 
 	public static $summary_fields = array(
-		'Title',
-		'Sort'
+		'Title'
 	);
 
 	public static $default_sort = 'Sort';
