@@ -63,6 +63,10 @@ class DependentDynamicListDropdownField extends DynamicListField {
 			}
 		}
 
+		if(!is_array($this->dependentLists)){
+			$this->dependentLists = array();
+		}
+
 		foreach ($this->dependentLists as $k => $v) {
 			$list = DynamicList::get_dynamic_list($k);
 			if ($list) {
