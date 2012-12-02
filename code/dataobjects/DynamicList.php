@@ -32,6 +32,36 @@ class DynamicList extends DataObject {
 			$item->delete();
 		}
 	}
+	
+	public function canView($member = null) {
+		return true;
+	}
+	
+	/**
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canEdit($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
+
+	/**
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canDelete($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
+
+	/**
+	 * @todo Should canCreate be a static method?
+	 *
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canCreate($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
 
 	/**
 	 * Convenience method for getting a data list
@@ -57,4 +87,5 @@ class DynamicList extends DataObject {
 
 		return $item;
 	}
+
 }

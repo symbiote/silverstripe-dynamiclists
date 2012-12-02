@@ -33,14 +33,7 @@ class DynamicListAdmin extends ModelAdmin {
 		'DynamicList' => 'DynamicListCsvLoader',
 	);
 
-	public function ImportForm() {
-		$form = parent::ImportForm();
-		$form->Fields()->replaceField('EmptyBeforeImport', new CheckboxField('EmptyBeforeImport', 'Clear Database before import', false));
-		return $form;
-	}
-
 }
-
 
 class DynamicListCsvLoader extends CsvBulkLoader {
 	public function __construct($objectClass) {
