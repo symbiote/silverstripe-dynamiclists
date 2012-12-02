@@ -57,5 +57,35 @@ class DynamicListItem extends DataObject {
 			$this->Sort = DB::query("SELECT MAX(\"Sort\") + 1 FROM \"DynamicListItem\" WHERE \"ListID\" = $parentID")->value();
 		}
 	}
+	
+	public function canView($member = null) {
+		return true;
+	}
+	
+	/**
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canEdit($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
+
+	/**
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canDelete($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
+
+	/**
+	 * @todo Should canCreate be a static method?
+	 *
+	 * @param Member $member
+	 * @return boolean
+	 */
+	public function canCreate($member = null) {
+		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+	}
 }
 ?>
