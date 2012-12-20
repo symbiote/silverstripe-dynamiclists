@@ -75,6 +75,10 @@ class DependentDynamicListDropdownField extends DynamicListField {
 		}
 		$this->setAttribute('data-listoptions', Convert::raw2json($listItems));
 		$this->setAttribute('data-dependentOn', $this->dependentOn);
+
+		if($this->value){
+			$this->setAttribute('data-initialvalue', $this->value);	
+		}
 		
 		return parent::Field();
 	}

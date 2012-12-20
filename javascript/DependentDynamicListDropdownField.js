@@ -12,6 +12,9 @@
 
 				if(dependentOn.val()){
 					self.updateOptions(dependentOn.val());
+					if(self.data('initialvalue')){
+						self.val(self.data('initialvalue'));
+					}
 				}
 
 				dependentOn.bind('change', function(){
