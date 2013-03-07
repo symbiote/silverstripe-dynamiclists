@@ -18,8 +18,9 @@ class DynamicList extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		$conf=GridFieldConfig_RelationEditor::create(10);
-		$conf->addComponent(new GridFieldSortableRows('Sort'));	
+		$conf=GridFieldConfig_RelationEditor::create(20);
+		//$conf->addComponent(new GridFieldSortableRows('Sort'));
+		$conf->addComponent(new GridFieldOrderableRows('Sort'));
 		$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
 		return $fields;
 	}
@@ -32,11 +33,11 @@ class DynamicList extends DataObject {
 			$item->delete();
 		}
 	}
-	
+
 	public function canView($member = null) {
 		return true;
 	}
-	
+
 	/**
 	 * @param Member $member
 	 * @return boolean

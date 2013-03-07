@@ -26,6 +26,9 @@ OF SUCH DAMAGE.
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class DynamicListField extends DropdownField {
+
+  protected $extraClasses = array('dropdown');
+
     function __construct($name, $title = null, $source = null, $value = "", $form = null, $emptyString = null) {
 		if (!$source) {
 			$source = array();
