@@ -38,6 +38,7 @@ class DependentDynamicListDropdownField extends DynamicListField {
 	 */
 	protected $dependentOn;
 
+  protected $extraClasses = array('dropdown');
 
 	public function  __construct($name, $title = null, $dynamicLists, $dependentOn = '', $value = "", $form = null, $emptyString = null) {
 		$this->dependentLists = $dynamicLists;
@@ -52,7 +53,7 @@ class DependentDynamicListDropdownField extends DynamicListField {
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
 		Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
-		
+
 		$listItems = array();
 
 		if (is_string($this->dependentLists)) {
@@ -77,9 +78,9 @@ class DependentDynamicListDropdownField extends DynamicListField {
 		$this->setAttribute('data-dependentOn', $this->dependentOn);
 
 		if($this->value){
-			$this->setAttribute('data-initialvalue', $this->value);	
+			$this->setAttribute('data-initialvalue', $this->value);
 		}
-		
+
 		return parent::Field();
 	}
 
@@ -92,4 +93,4 @@ class DependentDynamicListDropdownField extends DynamicListField {
 		$field->setForm($this->form);
 		return $field;
 	}
-}				
+}
