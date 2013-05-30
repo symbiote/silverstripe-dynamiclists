@@ -4,8 +4,7 @@
 	"require": {
 		"php": ">=5.3.2",
 		"silverstripe/cms": "3.0.*",
-		"silverstripe/framework": "3.0.*",
-		"ajshort/silverstripe-gridfieldextensions": "dev-master"
+		"silverstripe/framework": "3.0.*"
 	},
 	"minimum-stability": "dev"
 }

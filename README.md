@@ -6,7 +6,7 @@ Requirements
 
 SilverStripe 3.0
 
-ajshort/silverstripe-gridfieldextensions
+ajshort/silverstripe-gridfieldextensions OR UndefinedOffset/SortableGridField
 
 Overview
 --------

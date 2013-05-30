@@ -12,8 +12,8 @@ if (!class_exists('GridFieldSortableRows')) {
 }
 */
 
-if (!class_exists('GridFieldOrderableRows')) {
-	throw new Exception('The Dynamic Lists module requires the Gridfield Extensions module.');
+if (!class_exists('GridFieldOrderableRows') || !class_exists('GridFieldSortableRows')) {
+	throw new Exception('The Dynamic Lists module requires the Gridfield Extensions module OR GridFieldOrderableRows module.');
 }
 
 
