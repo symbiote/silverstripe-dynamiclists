@@ -46,6 +46,8 @@ class DynamicListField extends DropdownField {
 			}
 		}
 
+		$this->addExtraClass('dropdown');
+
 		parent::__construct($name, $title, $source, $value, $form, $emptyString);
 	}
 }
