@@ -37,6 +37,7 @@
 						self.append('<option val="' + k + '"' + sel + '>' + k + '</option>');
 					}
 				}
+				self.trigger('liszt:updated');
 			}
 
 		});
