@@ -19,7 +19,7 @@ class DynamicList extends DataObject {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$orderableComponent = class_exists('GridFieldOrderableRows') ? GridFieldOrderableRows::create('Sort') : GridFieldSortableRows::create('Sort');
+		$orderableComponent = class_exists('GridFieldOrderableRows') ? GridFieldOrderableRows::create('Sort') : new GridFieldSortableRows('Sort');
 		$conf=GridFieldConfig_RelationEditor::create(20);
 		$conf->addComponent($orderableComponent);
 		$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));

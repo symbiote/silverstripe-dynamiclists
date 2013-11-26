@@ -4,7 +4,7 @@ Dynamic Lists Module
 Requirements
 --------
 
-SilverStripe 3.0
+SilverStripe 3.0 or 3.1
 
 ajshort/silverstripe-gridfieldextensions OR UndefinedOffset/SortableGridField
 
