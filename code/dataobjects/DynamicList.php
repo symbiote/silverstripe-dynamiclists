@@ -8,18 +8,28 @@
  * @license BSD License http://silverstripe.org/bsd-license
  */
 class DynamicList extends DataObject {
-    public static $db = array(
+    private static $db = array(
 		'Title' => 'Varchar(128)',
+		'CachedItems'	=> 'Text',
 	);
 
-	public static $has_many = array(
+	private static $has_many = array(
 		'Items' => 'DynamicListItem',
 	);
+	
+	/**
+	 * Should list items be cached?
+	 *
+	 * @var boolean
+	 */
+	private static $cache_lists = false;
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		
+		$fields->removeByName('CachedItems');
 
-		$orderableComponent = class_exists('GridFieldOrderableRows') ? GridFieldOrderableRows::create('Sort') : new GridFieldSortableRows('Sort');
+		$orderableComponent = class_exists('GridFieldOrderableRows') ? new GridFieldOrderableRows('Sort') : new GridFieldSortableRows('Sort');
 		$conf=GridFieldConfig_RelationEditor::create(20);
 		$conf->addComponent($orderableComponent);
 		$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
@@ -90,4 +100,29 @@ class DynamicList extends DataObject {
 		return $item;
 	}
 
+	public function cacheListData() {
+		$items = $this->Items();
+		if ($items) {
+			$mapped = $items->map()->toArray();
+			if (count($mapped)) {
+				$this->CachedItems = serialize($mapped);
+				$this->write();
+			}
+		}
+	}
+	
+	/**
+	 * Get a map of ID => Title for the contained items in this list
+	 */
+	public function itemArray() {
+		if ($this->config()->cache_lists) {
+			$str = $this->CachedItems;
+			if (strlen($str) && $items = @unserialize($str)) {
+				return $items;
+			}
+		}
+
+		$mapped = $this->Items()->map()->toArray();
+		return $mapped;
+	}
 }
