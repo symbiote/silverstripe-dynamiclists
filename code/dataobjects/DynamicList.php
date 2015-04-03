@@ -103,10 +103,9 @@ class DynamicList extends DataObject {
 	public function cacheListData() {
 		$items = $this->Items();
 		if ($items) {
-			$mapped = $items->map()->toArray();
-			if (count($mapped)) {
-				$this->CachedItems = serialize($mapped);
-				$this->write();
+			$mapped = array();
+			foreach ($items as $i) {
+				$mapped[$i->ID] = $i->Title;
 			}
 		}
 	}
