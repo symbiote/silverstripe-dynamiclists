@@ -28,11 +28,14 @@ class DynamicList extends DataObject {
 		$fields = parent::getCMSFields();
 		
 		$fields->removeByName('CachedItems');
+		
+		if ($this->ID) {
+			$orderableComponent = class_exists('GridFieldOrderableRows') ? new GridFieldOrderableRows('Sort') : new GridFieldSortableRows('Sort');
+			$conf=GridFieldConfig_RelationEditor::create(20);
+			$conf->addComponent($orderableComponent);
+			$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
+		}
 
-		$orderableComponent = class_exists('GridFieldOrderableRows') ? new GridFieldOrderableRows('Sort') : new GridFieldSortableRows('Sort');
-		$conf=GridFieldConfig_RelationEditor::create(20);
-		$conf->addComponent($orderableComponent);
-		$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
 		return $fields;
 	}
 
