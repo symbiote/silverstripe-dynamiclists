@@ -27,49 +27,53 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class EditableDynamicListField extends EditableDropdown {
+class EditableDynamicListField extends EditableDropdown
+{
 
-	static $singular_name = 'Dynamic List field';
-	static $plural_name = 'Dynamic List fields';
+    public static $singular_name = 'Dynamic List field';
+    public static $plural_name = 'Dynamic List fields';
 
-	public function Icon() {
-		return 'userforms/images/editabledropdown.png';
-	}
+    public function Icon()
+    {
+        return 'userforms/images/editabledropdown.png';
+    }
 
-	public function getHasAddableOptions() {
-		return false;
-	}
+    public function getHasAddableOptions()
+    {
+        return false;
+    }
 
-	function getFieldConfiguration() {
-		$fields = parent::getFieldConfiguration();
+    public function getFieldConfiguration()
+    {
+        $fields = parent::getFieldConfiguration();
 
-		// eventually replace hard-coded "Fields"?
-		$baseName = "Fields[$this->ID]";
+        // eventually replace hard-coded "Fields"?
+        $baseName = "Fields[$this->ID]";
 
-		$listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : '';
+        $listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : '';
 
-		// get a list of data lists to select from
-		$allLists = DataObject::get('DynamicList');
-		
-		$options = array('Please create a DynamicList!' => '(No DynamicLists available)');
-		
-		if ($allLists) {
-			/* @var $allLists DataObjectSet */
-			$options = $allLists->map('Title', 'Title');
-		}
-		
-		$extraFields = new FieldList(
-			new DropDownField($baseName . "[CustomSettings][ListTitle]", _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options, $listName)
-		);
+        // get a list of data lists to select from
+        $allLists = DataObject::get('DynamicList');
+        
+        $options = array('Please create a DynamicList!' => '(No DynamicLists available)');
+        
+        if ($allLists) {
+            /* @var $allLists DataObjectSet */
+            $options = $allLists->map('Title', 'Title');
+        }
+        
+        $extraFields = new FieldList(
+            new DropDownField($baseName . "[CustomSettings][ListTitle]", _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options, $listName)
+        );
 
-		$fields->merge($extraFields);
-		return $fields;
-	}
+        $fields->merge($extraFields);
+        return $fields;
+    }
 
-	function getFormField() {
-		$listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : null;
-		// return a new list
-		return new DynamicListField($this->Name, $this->Title, $listName);
-	}
-
+    public function getFormField()
+    {
+        $listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : null;
+        // return a new list
+        return new DynamicListField($this->Name, $this->Title, $listName);
+    }
 }

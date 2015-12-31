@@ -6,29 +6,31 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class DynamicListField extends DropdownField {
+class DynamicListField extends DropdownField
+{
 
-  protected $extraClasses = array('dropdown');
+    protected $extraClasses = array('dropdown');
 
-    function __construct($name, $title = null, $source = null, $value = "", $form = null, $emptyString = null) {
-		if (!$source) {
-			$source = array();
-		}
+    public function __construct($name, $title = null, $source = null, $value = "", $form = null, $emptyString = null)
+    {
+        if (!$source) {
+            $source = array();
+        }
 
-		if (is_string($source)){
-			// it should be the name of a list, lets get all its contents
-			$dynamicList = DataObject::get_one('DynamicList', '"Title" = \''.Convert::raw2sql($source).'\'');
-			$source = array();
-			if ($dynamicList) {
-				$items = $dynamicList->Items();
-				foreach ($items as $item) {
-					$source[$item->Title] = $item->Title;
-				}
-			}
-		}
+        if (is_string($source)) {
+            // it should be the name of a list, lets get all its contents
+            $dynamicList = DataObject::get_one('DynamicList', '"Title" = \''.Convert::raw2sql($source).'\'');
+            $source = array();
+            if ($dynamicList) {
+                $items = $dynamicList->Items();
+                foreach ($items as $item) {
+                    $source[$item->Title] = $item->Title;
+                }
+            }
+        }
 
-		$this->addExtraClass('dropdown');
+        $this->addExtraClass('dropdown');
 
-		parent::__construct($name, $title, $source, $value, $form, $emptyString);
-	}
+        parent::__construct($name, $title, $source, $value, $form, $emptyString);
+    }
 }
