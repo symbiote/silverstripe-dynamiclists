@@ -23,74 +23,76 @@ OF SUCH DAMAGE.
 /**
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class DependentDynamicListDropdownField extends DynamicListField {
+class DependentDynamicListDropdownField extends DynamicListField
+{
     /**
-	 * The lists that should be used to populate the dynamic list
-	 *
-	 * @var array
-	 */
-	protected $dependentLists;
+     * The lists that should be used to populate the dynamic list
+     *
+     * @var array
+     */
+    protected $dependentLists;
 
-	/**
-	 * The Name of the other form control that we're dependent upon
-	 *
-	 * @var String
-	 */
-	protected $dependentOn;
+    /**
+     * The Name of the other form control that we're dependent upon
+     *
+     * @var String
+     */
+    protected $dependentOn;
 
-  protected $extraClasses = array('dropdown');
+    protected $extraClasses = array('dropdown');
 
-	public function  __construct($name, $title = null, $dynamicLists, $dependentOn = '', $value = "", $form = null, $emptyString = null) {
-		$this->dependentLists = $dynamicLists;
-		$this->dependentOn = $dependentOn;
+    public function __construct($name, $title = null, $dynamicLists, $dependentOn = '', $value = "", $form = null, $emptyString = null)
+    {
+        $this->dependentLists = $dynamicLists;
+        $this->dependentOn = $dependentOn;
 
-		parent::__construct($name, $title, array(), $value, $form, $emptyString);
-	}
+        parent::__construct($name, $title, array(), $value, $form, $emptyString);
+    }
 
 
-	public function Field($properties = array()) {
+    public function Field($properties = array())
+    {
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+        Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
 
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-		Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
+        $listItems = array();
 
-		$listItems = array();
+        if (is_string($this->dependentLists)) {
+            $list = DynamicList::get_dynamic_list($this->dependentLists);
+            if ($list) {
+                $this->dependentLists = $list->Items()->map('Title', 'Title')->toArray();
+            }
+        }
 
-		if (is_string($this->dependentLists)) {
-			$list = DynamicList::get_dynamic_list($this->dependentLists);
-			if ($list) {
+        if (!is_array($this->dependentLists)) {
+            $this->dependentLists = array();
+        }
 
-				$this->dependentLists = $list->Items()->map('Title', 'Title')->toArray();
-			}
-		}
+        foreach ($this->dependentLists as $k => $v) {
+            $list = DynamicList::get_dynamic_list($k);
+            if ($list) {
+                $listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
+            }
+        }
+        $this->setAttribute('data-listoptions', Convert::raw2json($listItems));
+        $this->setAttribute('data-dependentOn', $this->dependentOn);
 
-		if(!is_array($this->dependentLists)){
-			$this->dependentLists = array();
-		}
+        if ($this->value) {
+            $this->setAttribute('data-initialvalue', $this->value);
+        }
 
-		foreach ($this->dependentLists as $k => $v) {
-			$list = DynamicList::get_dynamic_list($k);
-			if ($list) {
-				$listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
-			}
-		}
-		$this->setAttribute('data-listoptions', Convert::raw2json($listItems));
-		$this->setAttribute('data-dependentOn', $this->dependentOn);
+        return parent::Field();
+    }
 
-		if($this->value){
-			$this->setAttribute('data-initialvalue', $this->value);
-		}
-
-		return parent::Field();
-	}
-
-	/**
-	 * Returns a readonly version of this field
-	 */
-	function performReadonlyTransformation() {
-		$field = new ReadonlyField($this->name, $this->title, $this->value);
-		$field->addExtraClass($this->extraClass());
-		$field->setForm($this->form);
-		return $field;
-	}
+    /**
+     * Returns a readonly version of this field
+     */
+    public function performReadonlyTransformation()
+    {
+        $field = new ReadonlyField($this->name, $this->title, $this->value);
+        $field->addExtraClass($this->extraClass());
+        $field->setForm($this->form);
+        return $field;
+    }
 }

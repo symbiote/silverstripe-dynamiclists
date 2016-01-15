@@ -28,85 +28,90 @@ OF SUCH DAMAGE.
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class EditableDependentDynamicListField extends EditableDropdown {
-    static $singular_name = 'Dependent Dynamic List field';
+class EditableDependentDynamicListField extends EditableDropdown
+{
+    public static $singular_name = 'Dependent Dynamic List field';
 
-	static $plural_name = 'Dependent Dynamic List fields';
+    public static $plural_name = 'Dependent Dynamic List fields';
 
-	public function Icon() {
-		return 'userforms/images/editabledropdown.png';
-	}
+    public function Icon()
+    {
+        return 'userforms/images/editabledropdown.png';
+    }
 
-	public function getHasAddableOptions() {
-		return false;
-	}
+    public function getHasAddableOptions()
+    {
+        return false;
+    }
 
-	function getFieldConfiguration() {
-		$fields = parent::getFieldConfiguration();
+    public function getFieldConfiguration()
+    {
+        $fields = parent::getFieldConfiguration();
 
-		// eventually replace hard-coded "Fields"?
-		$baseName = "Fields[$this->ID]";
+        // eventually replace hard-coded "Fields"?
+        $baseName = "Fields[$this->ID]";
 
-		$listName = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : '';
+        $listName = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : '';
 
-		// select another form field that has the titles of the lists to use for this list when displayed
-		// The assumption being made here is that each entry in the source list has a corresponding dynamic list
-		// defined for it, which we use later on. 
-		$options = array();
-		if ($this->Parent()) {
-			$sourceList = $this->Parent()->Fields();
-			if ($sourceList) {
-				$options = $sourceList->map('Name', 'Title');
-			}
-		}
-		
-		$extraFields = new FieldList(
-			new DropDownField($baseName . "[CustomSettings][SourceList]", _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options, $listName)
-		);
+        // select another form field that has the titles of the lists to use for this list when displayed
+        // The assumption being made here is that each entry in the source list has a corresponding dynamic list
+        // defined for it, which we use later on. 
+        $options = array();
+        if ($this->Parent()) {
+            $sourceList = $this->Parent()->Fields();
+            if ($sourceList) {
+                $options = $sourceList->map('Name', 'Title');
+            }
+        }
+        
+        $extraFields = new FieldList(
+            new DropDownField($baseName . "[CustomSettings][SourceList]", _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options, $listName)
+        );
 
-		$fields->merge($extraFields);
-		return $fields;
-	}
+        $fields->merge($extraFields);
+        return $fields;
+    }
 
-	function getFormField() {
-		$sourceList = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : null;
-		// first off lets go and output all the options we need
-		$fields = $this->Parent()->Fields();
-		$source = null;
-		foreach ($fields as $field) {
-			if ($field->Name == $sourceList) {
-				$source = $field;
-				break;
-			}
-		}
+    public function getFormField()
+    {
+        $sourceList = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : null;
+        // first off lets go and output all the options we need
+        $fields = $this->Parent()->Fields();
+        $source = null;
+        foreach ($fields as $field) {
+            if ($field->Name == $sourceList) {
+                $source = $field;
+                break;
+            }
+        }
 
-		$optionLists = array();
-		if ($source) {
-			// all our potential lists come from the source list's dynamic list source, so we need to go load that
-			// first, then iterate it and build all the additional required lists
-			$sourceList = DynamicList::get_dynamic_list($source->getSetting('ListTitle'));
-			if ($sourceList) {
-				$items = $sourceList->Items();
-				
-				// now lets create a bunch of option fields
-				foreach ($items as $sourceItem) {
-					// now get the dynamic list that is represented by this one
-					$list = DynamicList::get_dynamic_list($sourceItem->Title);
-					if ($list) {
-						$optionLists[$sourceItem->Title] = $sourceItem->Title;
-					}
-				}
-			}
+        $optionLists = array();
+        if ($source) {
+            // all our potential lists come from the source list's dynamic list source, so we need to go load that
+            // first, then iterate it and build all the additional required lists
+            $sourceList = DynamicList::get_dynamic_list($source->getSetting('ListTitle'));
+            if ($sourceList) {
+                $items = $sourceList->Items();
+                
+                // now lets create a bunch of option fields
+                foreach ($items as $sourceItem) {
+                    // now get the dynamic list that is represented by this one
+                    $list = DynamicList::get_dynamic_list($sourceItem->Title);
+                    if ($list) {
+                        $optionLists[$sourceItem->Title] = $sourceItem->Title;
+                    }
+                }
+            }
 
-			if (count($optionLists)) {
-				return new DependentDynamicListDropdownField($this->Name, $this->Title, $optionLists, $source->Name);
-			}else{
-				return new DropdownField($this->Name, $this->Title, array());
-			}
-		}
+            if (count($optionLists)) {
+                return new DependentDynamicListDropdownField($this->Name, $this->Title, $optionLists, $source->Name);
+            } else {
+                return new DropdownField($this->Name, $this->Title, array());
+            }
+        }
 
 
-		// return a new list
-		return new LiteralField($this->Name);
-	}
+        // return a new list
+        return new LiteralField($this->Name);
+    }
 }
