@@ -1,0 +1,7 @@
+---
+Only:
+  moduleexists: 'userforms'
+---
+DynamicList:
+  extensions:
+    - 'DynamicListUDFExtension'
