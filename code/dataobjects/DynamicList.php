@@ -36,6 +36,9 @@ class DynamicList extends DataObject {
 			$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
 		}
 
+		// Allow extension.
+		
+		$this->extend('updateDynamicListCMSFields', $fields);
 		return $fields;
 	}
 
