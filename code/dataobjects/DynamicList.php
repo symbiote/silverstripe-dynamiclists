@@ -88,7 +88,7 @@ class DynamicList extends DataObject {
 	 * @return DataObject
 	 */
 	public static function get_dynamic_list($title) {
-		$list = DataObject::get_one('DynamicList', '"Title" = \''.Convert::raw2sql($title).'\'');
+		$list = DynamicList::get()->filter('Title', $title)->first();
 		return $list;
 	}
 
