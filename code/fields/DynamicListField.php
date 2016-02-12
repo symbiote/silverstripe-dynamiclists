@@ -17,7 +17,7 @@ class DynamicListField extends DropdownField {
 
 		if (is_string($source)){
 			// it should be the name of a list, lets get all its contents
-			$dynamicList = DataObject::get_one('DynamicList', '"Title" = \''.Convert::raw2sql($source).'\'');
+			$dynamicList = DynamicList::get_dynamic_list($source);
 			$source = array();
 			if ($dynamicList) {
 				$items = $dynamicList->Items();

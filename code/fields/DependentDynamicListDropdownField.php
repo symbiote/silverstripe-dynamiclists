@@ -85,6 +85,47 @@ class DependentDynamicListDropdownField extends DynamicListField {
 	}
 
 	/**
+	 * Override method for validation to use dynamic list based off the
+	 * parent's value. Overridden due to null source.
+	 * @param type $validator 
+	 * @return bool
+	 */
+	public function validate($validator) {
+		// Source isn't pulled in correctly and we're going to rectify this
+		// later on, so this can be an empty array for now.
+		$source = array();
+		$disabled = $this->getDisabledItems();
+
+		// Grab the parent list we're trying to validate against first so we can refer to it.
+		$parentListName = $this->getForm()->Fields()->fieldByName($this->dependentOn)->value;
+
+		// Use the items from the Dynamic list as the "source" for validation purposes
+		$parentList = DynamicList::get_dynamic_list($parentListName);
+		if($parentList) {
+			$source = $parentList->Items()->map('Title', 'Title')->toArray();
+		}
+
+		// Carry on as normal validating against our new source!
+		// Since there's no data if the list doesn't exist, then of course it will fail
+		if (!array_key_exists($this->value, $source) || in_array($this->value, $disabled)) {
+			if ($this->getHasEmptyDefault() && !$this->value) {
+				return true;
+			}
+			$validator->validationError(
+				$this->name,
+				_t(
+					'DropdownField.SOURCE_VALIDATION',
+					"Please select a value within the list provided. {value} is not a valid option",
+					array('value' => $this->value)
+				),
+				"validation"
+			);
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Returns a readonly version of this field
 	 */
 	function performReadonlyTransformation() {
