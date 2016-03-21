@@ -2,6 +2,7 @@
   "name": "sheadawson/silverstripe-dynamiclists",
 	"description": "A Module that allows users to create custom data lists. These lists can then be used in a form control (specified via code by a developer) or within a user defined form to be able to define controlled vocabularies managed in a central location that might be used across several forms.",
 	"type": "silverstripe-module",
+	"license": "BSD-3-Clause",
 	"authors": [
     {
         "name": "Shea Dawson",
@@ -14,7 +15,10 @@
 		"silverstripe/framework": "3.*"
 	},
 	"extra": {
-		"installer-name": "dynamiclists"
+		"installer-name": "dynamiclists",
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		}
     },
 	"minimum-stability": "dev"
 }
