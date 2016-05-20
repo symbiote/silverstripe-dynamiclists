@@ -29,6 +29,10 @@ OF SUCH DAMAGE.
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class EditableDependentDynamicListField extends EditableDropdown {
+	private static $db = array(
+		'SourceList' => 'Varchar(512)',
+	);
+
     static $singular_name = 'Dependent Dynamic List field';
 
 	static $plural_name = 'Dependent Dynamic List fields';
@@ -41,13 +45,8 @@ class EditableDependentDynamicListField extends EditableDropdown {
 		return false;
 	}
 
-	function getFieldConfiguration() {
-		$fields = parent::getFieldConfiguration();
-
-		// eventually replace hard-coded "Fields"?
-		$baseName = "Fields[$this->ID]";
-
-		$listName = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : '';
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
 
 		// select another form field that has the titles of the lists to use for this list when displayed
 		// The assumption being made here is that each entry in the source list has a corresponding dynamic list
@@ -60,16 +59,23 @@ class EditableDependentDynamicListField extends EditableDropdown {
 			}
 		}
 		
-		$extraFields = new FieldList(
-			new DropDownField($baseName . "[CustomSettings][SourceList]", _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options, $listName)
-		);
+		$fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
 
-		$fields->merge($extraFields);
 		return $fields;
 	}
 
+	public function getSourceList() {
+		if ($value = $this->getField('SourceList'))
+		{
+			return $value;
+		}
+		// In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
+		return $this->getSetting('SourceList');
+	}
+
 	function getFormField() {
-		$sourceList = ($this->getSetting('SourceList')) ? $this->getSetting('SourceList') : null;
+		$sourceList = $this->SourceList;
+
 		// first off lets go and output all the options we need
 		$fields = $this->Parent()->Fields();
 		$source = null;
@@ -84,7 +90,7 @@ class EditableDependentDynamicListField extends EditableDropdown {
 		if ($source) {
 			// all our potential lists come from the source list's dynamic list source, so we need to go load that
 			// first, then iterate it and build all the additional required lists
-			$sourceList = DynamicList::get_dynamic_list($source->getSetting('ListTitle'));
+			$sourceList = DynamicList::get_dynamic_list($source->ListTitle);
 			if ($sourceList) {
 				$items = $sourceList->Items();
 				
@@ -99,9 +105,9 @@ class EditableDependentDynamicListField extends EditableDropdown {
 			}
 
 			if (count($optionLists)) {
-				return new DependentDynamicListDropdownField($this->Name, $this->Title, $optionLists, $source->Name);
+				return DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name);
 			}else{
-				return new DropdownField($this->Name, $this->Title, array());
+				return DropdownField::create($this->Name, $this->Title, array());
 			}
 		}
 

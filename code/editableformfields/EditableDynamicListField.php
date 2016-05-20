@@ -29,6 +29,10 @@
  */
 class EditableDynamicListField extends EditableDropdown {
 
+	private static $db = array(
+		'ListTitle' => 'Varchar(512)',
+	);
+
 	static $singular_name = 'Dynamic List field';
 	static $plural_name = 'Dynamic List fields';
 
@@ -40,13 +44,8 @@ class EditableDynamicListField extends EditableDropdown {
 		return false;
 	}
 
-	function getFieldConfiguration() {
-		$fields = parent::getFieldConfiguration();
-
-		// eventually replace hard-coded "Fields"?
-		$baseName = "Fields[$this->ID]";
-
-		$listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : '';
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
 
 		// get a list of data lists to select from
 		$allLists = DataObject::get('DynamicList');
@@ -58,18 +57,21 @@ class EditableDynamicListField extends EditableDropdown {
 			$options = $allLists->map('Title', 'Title');
 		}
 		
-		$extraFields = new FieldList(
-			new DropDownField($baseName . "[CustomSettings][ListTitle]", _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options, $listName)
-		);
-
-		$fields->merge($extraFields);
+		$fields->addFieldToTab('Root.Main', DropDownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
 		return $fields;
 	}
 
+	public function getListTitle() {
+		if ($value = $this->getField('ListTitle'))
+		{
+			return $value;
+		}
+		// In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
+		return $this->getSetting('ListTitle');
+	}
+
 	function getFormField() {
-		$listName = ($this->getSetting('ListTitle')) ? $this->getSetting('ListTitle') : null;
-		// return a new list
-		return new DynamicListField($this->Name, $this->Title, $listName);
+		return DynamicListField::create($this->Name, $this->Title, $this->ListTitle);
 	}
 
 }
