@@ -46,6 +46,7 @@ class EditableDynamicListField extends EditableDropdown {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+		$fields->removeByName(array('Options'));
 
 		// get a list of data lists to select from
 		$allLists = DataObject::get('DynamicList');
@@ -57,7 +58,7 @@ class EditableDynamicListField extends EditableDropdown {
 			$options = $allLists->map('Title', 'Title');
 		}
 		
-		$fields->addFieldToTab('Root.Main', DropDownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
+		$fields->addFieldToTab('Root.Main', DropdownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
 		return $fields;
 	}
 
