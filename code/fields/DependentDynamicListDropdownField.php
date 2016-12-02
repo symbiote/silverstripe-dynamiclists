@@ -97,7 +97,7 @@ class DependentDynamicListDropdownField extends DynamicListField {
 		$disabled = $this->getDisabledItems();
 
 		// Grab the parent list we're trying to validate against first so we can refer to it.
-		$parentListName = $this->getForm()->Fields()->fieldByName($this->dependentOn)->value;
+		$parentListName = $this->getForm()->Fields()->dataFieldByName($this->dependentOn)->value;
 
 		// Use the items from the Dynamic list as the "source" for validation purposes
 		$parentList = DynamicList::get_dynamic_list($parentListName);
