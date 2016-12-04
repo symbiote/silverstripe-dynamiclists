@@ -13,7 +13,16 @@
 				if(dependentOn.val()){
 					self.updateOptions(dependentOn.val());
 					if(self.data('initialvalue')){
-						self.val(self.data('initialvalue'));
+						self.change(function(){
+							var data = $(this).val();
+						});
+
+						self.val(self.data('initialvalue')).trigger('change');
+
+						if(self.chosen != undefined) {
+							self.trigger("liszt:updated");
+							self.trigger("chosen:updated");
+						}
 					}
 				}
 
@@ -37,7 +46,10 @@
 						self.append('<option val="' + k + '"' + sel + '>' + k + '</option>');
 					}
 				}
-				self.trigger('liszt:updated');
+				if(self.chosen != undefined) {
+					self.trigger('liszt:updated');
+					self.trigger("chosen:updated");
+				}
 			}
 
 		});
