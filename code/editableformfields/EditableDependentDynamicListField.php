@@ -105,10 +105,15 @@ class EditableDependentDynamicListField extends EditableDropdown {
 			}
 
 			if (count($optionLists)) {
-				return DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name)->addExtraClass('uf-dependentdynamiclistdropdown');
+				$field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name);
 			}else{
-				return DropdownField::create($this->Name, $this->Title, array());
+				$field = DropdownField::create($this->Name, $this->Title, array());
 			}
+			$field
+				->setFieldHolderTemplate('UserFormsField_holder')
+				->setTemplate('UserFormsDropdownField');
+			$this->doUpdateFormField($field);
+			return $field;
 		}
 
 
