@@ -105,7 +105,7 @@ class EditableDependentDynamicListField extends EditableDropdown {
 			}
 
 			if (count($optionLists)) {
-				$field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name);
+				$field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name)->addExtraClass('uf-dependentdynamiclistdropdown');
 			}else{
 				$field = DropdownField::create($this->Name, $this->Title, array());
 			}
