@@ -21,7 +21,7 @@ class DynamicListItem extends DataObject {
 		'Title'
 	);
 
-	private static $default_sort = 'Sort';
+	private static $default_sort = 'Sort, ID';
 	
 
 	public function getCMSFields() {
