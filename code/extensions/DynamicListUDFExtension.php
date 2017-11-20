@@ -28,7 +28,7 @@ class DynamicListUDFExtension extends DataExtension {
 
 			// This information is stored using a serialised list, therefore we need to iterate through.
 
-			if($field->getSetting('ListTitle') === $this->owner->Title) {
+			if($field->ListTitle === $this->owner->Title) {
 
 				// Make sure there are no duplicates recorded.
 
