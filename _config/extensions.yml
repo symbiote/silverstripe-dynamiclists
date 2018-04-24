@@ -1,6 +1,6 @@
 ---
 Only:
-  moduleexists: 'userforms'
+  moduleexists: 'silverstripe/userforms'
 ---
 DynamicList:
   extensions:
