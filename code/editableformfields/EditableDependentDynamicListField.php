@@ -1,4 +1,7 @@
 <?php
+
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\LiteralField;
 /*
 
 Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -28,6 +31,7 @@ OF SUCH DAMAGE.
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
+if(class_exists('EditableDropdown')) {
 class EditableDependentDynamicListField extends EditableDropdown {
 	private static $db = array(
 		'SourceList' => 'Varchar(512)',
@@ -120,4 +124,5 @@ class EditableDependentDynamicListField extends EditableDropdown {
 		// return a new list
 		return new LiteralField($this->Name);
 	}
+}
 }

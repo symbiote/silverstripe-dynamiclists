@@ -1,5 +1,10 @@
 <?php
 
+use SilverStripe\Versioned\Versioned;
+use SilverStripe\Forms\HeaderField;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\ORM\DataExtension;
+
 /**
  *	This extension is to help identify dynamic lists a little better.
  *	@author Nathan Glasl <nathan@silverstripe.com.au>

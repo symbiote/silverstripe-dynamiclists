@@ -1,4 +1,9 @@
 <?php
+
+use SilverStripe\Admin\ModelAdmin;
+use SilverStripe\Core\Convert;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Dev\CsvBulkLoader;
 /*
 
 Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -24,12 +29,12 @@ OF SUCH DAMAGE.
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class DynamicListAdmin extends ModelAdmin {
-    static $managed_models = array('DynamicList');
-	static $url_segment = 'dynamiclistadmin';
+    private static $managed_models = array('DynamicList');
+	private static $url_segment = 'dynamiclistadmin';
 
-	static $menu_title = "Dynamic Lists";
+	private static $menu_title = "Dynamic Lists";
 
-	static $model_importers = array(
+	private static $model_importers = array(
 		'DynamicList' => 'DynamicListCsvLoader',
 	);
 

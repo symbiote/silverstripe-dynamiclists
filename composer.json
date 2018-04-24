@@ -11,13 +11,14 @@
     ],
 	"require": {
 		"php": ">=5.3.2",
-		"silverstripe/cms": "3.*",
-		"silverstripe/framework": "3.*"
+		"silverstripe/cms": "4.*",
+		"silverstripe/framework": "4.*",
+        "symbiote/silverstripe-gridfieldextensions": "3.*"
 	},
 	"extra": {
 		"installer-name": "dynamiclists",
 		"branch-alias": {
-			"dev-master": "1.0.x-dev"
+			"dev-master": "2.0.x-dev"
 		}
     },
 	"minimum-stability": "dev"

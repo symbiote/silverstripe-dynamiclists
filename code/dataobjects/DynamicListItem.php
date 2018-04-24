@@ -1,5 +1,9 @@
 <?php
 
+use SilverStripe\ORM\DB;
+use SilverStripe\Security\Permission;
+use SilverStripe\ORM\DataObject;
+
 /**
  * A dynamic list is a user specified list of data items that can be used
  * for a variety of areas in the site where a predefined list is used
@@ -73,7 +77,7 @@ class DynamicListItem extends DataObject {
 	 * @param Member $member
 	 * @return boolean
 	 */
-	public function canCreate($member = null) {
+	public function canCreate($member = null, $context = array()) {
 		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
 	}
 }

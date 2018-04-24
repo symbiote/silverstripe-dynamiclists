@@ -1,4 +1,12 @@
 <?php
+
+use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Security\Permission;
+use SilverStripe\Core\Convert;
+use SilverStripe\ORM\DataObject;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+
 /**
  * A data list is a user specified list of data items that can be used
  * for a variety of areas in the site where a predefined list is used
@@ -30,7 +38,7 @@ class DynamicList extends DataObject {
 		$fields->removeByName('CachedItems');
 		
 		if ($this->ID) {
-			$orderableComponent = class_exists('GridFieldOrderableRows') ? new GridFieldOrderableRows('Sort') : new GridFieldSortableRows('Sort');
+			$orderableComponent = new GridFieldOrderableRows('Sort');
 			$conf=GridFieldConfig_RelationEditor::create(20);
 			$conf->addComponent($orderableComponent);
 			$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
@@ -77,7 +85,7 @@ class DynamicList extends DataObject {
 	 * @param Member $member
 	 * @return boolean
 	 */
-	public function canCreate($member = null) {
+	public function canCreate($member = null, $context = array()) {
 		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
 	}
 

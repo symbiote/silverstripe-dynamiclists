@@ -1,4 +1,7 @@
 <?php
+
+use SilverStripe\ORM\DB;
+use SilverStripe\Dev\BuildTask;
 /**
  * Moves the old DataList and DataListItem records to DynamList/DynamicListItem
  * @author Shea Dawson <shea@silverstripe.com.au>

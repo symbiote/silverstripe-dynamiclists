@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\ORM\DB;
+use SilverStripe\Dev\BuildTask;
+
 class DynamicListUserFormsUpgradeTask extends BuildTask {
 	protected $title = "Dynamic List UserForms 3.0 Migration Tool";
 

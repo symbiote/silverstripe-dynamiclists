@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\DropdownField;
+
 /*
 
   Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -27,6 +30,7 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
+if(class_exists('EditableDropdown')) {
 class EditableDynamicListField extends EditableDropdown {
 
 	private static $db = array(
@@ -79,4 +83,5 @@ class EditableDynamicListField extends EditableDropdown {
 		return $field;
 	}
 
+}
 }
