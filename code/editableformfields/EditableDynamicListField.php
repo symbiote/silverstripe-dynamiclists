@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\DropdownField;
 

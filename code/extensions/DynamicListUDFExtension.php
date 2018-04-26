@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\LiteralField;

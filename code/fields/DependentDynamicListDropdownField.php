@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\View\Requirements;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\ReadonlyField;

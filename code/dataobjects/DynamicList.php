@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Security\Permission;
@@ -22,7 +24,7 @@ class DynamicList extends DataObject {
 	);
 
 	private static $has_many = array(
-		'Items' => 'DynamicListItem',
+		'Items' => DynamicListItem::class,
 	);
 	
 	/**

@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\ORM\DB;
 use SilverStripe\Dev\BuildTask;
 /**

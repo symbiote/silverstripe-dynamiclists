@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Core\Convert;
 use SilverStripe\ORM\DataObject;
@@ -29,13 +31,13 @@ OF SUCH DAMAGE.
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class DynamicListAdmin extends ModelAdmin {
-    private static $managed_models = array('DynamicList');
+    
 	private static $url_segment = 'dynamiclistadmin';
-
 	private static $menu_title = "Dynamic Lists";
 
+    private static $managed_models = array(DynamicList::class);
 	private static $model_importers = array(
-		'DynamicList' => 'DynamicListCsvLoader',
+		DynamicList::class => DynamicListCsvLoader::class,
 	);
 
 }
@@ -66,7 +68,7 @@ class DynamicListCsvLoader extends CsvBulkLoader {
 		}
 
 		// now add the item to that list
-		$existingItem = DataObject::get_one('DynamicListItem', '"Title"=\''.Convert::raw2sql($item).'\' AND "ListID" = '.((int) $existingList->ID));
+		$existingItem = DataObject::get_one(DynamicListItem::class, '"Title"=\''.Convert::raw2sql($item).'\' AND "ListID" = '.((int) $existingList->ID));
 		if (!$existingItem) {
 			$existingItem = new DynamicListItem;
 			$existingItem->Title = $item;

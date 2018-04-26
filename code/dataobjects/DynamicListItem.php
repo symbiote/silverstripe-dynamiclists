@@ -1,5 +1,7 @@
 <?php
 
+namespace sheadawson\DynamicLists;
+
 use SilverStripe\ORM\DB;
 use SilverStripe\Security\Permission;
 use SilverStripe\ORM\DataObject;
@@ -18,7 +20,7 @@ class DynamicListItem extends DataObject {
 	);
 
 	private static $has_one = array(
-		'List' => 'DynamicList'
+		'List' => DynamicList::class
 	);
 
 	private static $summary_fields = array(
