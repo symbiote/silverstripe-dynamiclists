@@ -5,6 +5,7 @@ namespace sheadawson\DynamicLists;
 use SilverStripe\View\Requirements;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\ReadonlyField;
+
 /*
 
 Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -29,119 +30,123 @@ OF SUCH DAMAGE.
 /**
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class DependentDynamicListDropdownField extends DynamicListField {
+class DependentDynamicListDropdownField extends DynamicListField
+{
     /**
-	 * The lists that should be used to populate the dynamic list
-	 *
-	 * @var array
-	 */
-	protected $dependentLists;
+     * The lists that should be used to populate the dynamic list
+     *
+     * @var array
+     */
+    protected $dependentLists;
 
-	/**
-	 * The Name of the other form control that we're dependent upon
-	 *
-	 * @var String
-	 */
-	protected $dependentOn;
+    /**
+     * The Name of the other form control that we're dependent upon
+     *
+     * @var String
+     */
+    protected $dependentOn;
 
-  protected $extraClasses = array('dropdown');
+    protected $extraClasses = array('dropdown');
 
-	public function  __construct($name, $title = null, $dynamicLists, $dependentOn = '', $value = "", $form = null, $emptyString = null) {
-		$this->dependentLists = $dynamicLists;
-		$this->dependentOn = $dependentOn;
+    public function __construct($name, $title = null, $dynamicLists = null, $dependentOn = '', $value = "", $form = null, $emptyString = null)
+    {
+        $this->dependentLists = $dynamicLists;
+        $this->dependentOn = $dependentOn;
 
-		parent::__construct($name, $title, array(), $value, $form, $emptyString);
-	}
+        parent::__construct($name, $title, array(), $value, $form, $emptyString);
+    }
 
 
-	public function Field($properties = array()) {
+    public function Field($properties = array())
+    {
 
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-		Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+        Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
 
-		$listItems = array();
+        $listItems = array();
 
-		if (is_string($this->dependentLists)) {
-			$list = DynamicList::get_dynamic_list($this->dependentLists);
-			if ($list) {
+        if (is_string($this->dependentLists)) {
+            $list = DynamicList::get_dynamic_list($this->dependentLists);
+            if ($list) {
+                $this->dependentLists = $list->Items()->map('Title', 'Title')->toArray();
+            }
+        }
 
-				$this->dependentLists = $list->Items()->map('Title', 'Title')->toArray();
-			}
-		}
+        if (!is_array($this->dependentLists)) {
+            $this->dependentLists = array();
+        }
 
-		if(!is_array($this->dependentLists)){
-			$this->dependentLists = array();
-		}
+        foreach ($this->dependentLists as $k => $v) {
+            $list = DynamicList::get_dynamic_list($k);
+            if ($list) {
+                $listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
+            }
+        }
+        $this->setAttribute('data-listoptions', Convert::raw2json($listItems));
+        $this->setAttribute('data-dependentOn', $this->dependentOn);
 
-		foreach ($this->dependentLists as $k => $v) {
-			$list = DynamicList::get_dynamic_list($k);
-			if ($list) {
-				$listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
-			}
-		}
-		$this->setAttribute('data-listoptions', Convert::raw2json($listItems));
-		$this->setAttribute('data-dependentOn', $this->dependentOn);
+        if ($this->value) {
+            $this->setAttribute('data-initialvalue', $this->value);
+        }
 
-		if($this->value){
-			$this->setAttribute('data-initialvalue', $this->value);
-		}
+        return parent::Field();
+    }
 
-		return parent::Field();
-	}
+    /**
+     * Override method for validation to use dynamic list based off the
+     * parent's value. Overridden due to null source.
+     * @param type $validator
+     * @return bool
+     */
+    public function validate($validator)
+    {
+        // Source isn't pulled in correctly and we're going to rectify this
+        // later on, so this can be an empty array for now.
+        $source = array();
+        $disabled = $this->getDisabledItems();
 
-	/**
-	 * Override method for validation to use dynamic list based off the
-	 * parent's value. Overridden due to null source.
-	 * @param type $validator 
-	 * @return bool
-	 */
-	public function validate($validator) {
-		// Source isn't pulled in correctly and we're going to rectify this
-		// later on, so this can be an empty array for now.
-		$source = array();
-		$disabled = $this->getDisabledItems();
+        // Grab the parent list we're trying to validate against first so we can refer to it.
+        if (strpos($this->dependentOn, '.') !== false) {
+            $parentListName = $this->getForm()->Fields()->fieldByName($this->dependentOn)->value;
+        } else {
+            $parentListName = $this->getForm()->Fields()->dataFieldByName($this->dependentOn)->value;
+        }
 
-		// Grab the parent list we're trying to validate against first so we can refer to it.
-		if(strpos($this->dependentOn, '.') !== false) {
-			$parentListName = $this->getForm()->Fields()->fieldByName($this->dependentOn)->value;
-		} else {
-			$parentListName = $this->getForm()->Fields()->dataFieldByName($this->dependentOn)->value;
-		}
+        // Use the items from the Dynamic list as the "source" for validation purposes
+        $parentList = DynamicList::get_dynamic_list($parentListName);
+        if ($parentList) {
+            $source = $parentList->Items()->map('Title', 'Title')->toArray();
+        }
 
-		// Use the items from the Dynamic list as the "source" for validation purposes
-		$parentList = DynamicList::get_dynamic_list($parentListName);
-		if($parentList) {
-			$source = $parentList->Items()->map('Title', 'Title')->toArray();
-		}
+        // Carry on as normal validating against our new source!
+        // Since there's no data if the list doesn't exist, then of course it will fail
+        if (!array_key_exists($this->value, $source) || in_array($this->value, $disabled)) {
+            if ($this->getHasEmptyDefault() && !$this->value) {
+                return true;
+            }
+            $validator->validationError(
+                $this->name,
+                _t(
+                    'DropdownField.SOURCE_VALIDATION',
+                    "Please select a value within the list provided. {value} is not a valid option",
+                    array('value' => $this->value)
+                ),
+                "validation"
+            );
+            return false;
+        }
+        return true;
+    }
 
-		// Carry on as normal validating against our new source!
-		// Since there's no data if the list doesn't exist, then of course it will fail
-		if (!array_key_exists($this->value, $source) || in_array($this->value, $disabled)) {
-			if ($this->getHasEmptyDefault() && !$this->value) {
-				return true;
-			}
-			$validator->validationError(
-				$this->name,
-				_t(
-					'DropdownField.SOURCE_VALIDATION',
-					"Please select a value within the list provided. {value} is not a valid option",
-					array('value' => $this->value)
-				),
-				"validation"
-			);
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Returns a readonly version of this field
-	 */
-	function performReadonlyTransformation() {
-		$field = new ReadonlyField($this->name, $this->title, $this->value);
-		$field->addExtraClass($this->extraClass());
-		$field->setForm($this->form);
-		return $field;
-	}
+    /**
+     * Returns a readonly version of this field
+     */
+    public function performReadonlyTransformation()
+    {
+        $field = new ReadonlyField($this->name, $this->title, $this->value);
+        $field->addExtraClass($this->extraClass());
+        $field->setForm($this->form);
+        return $field;
+    }
 }

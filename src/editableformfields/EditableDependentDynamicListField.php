@@ -5,6 +5,7 @@ namespace sheadawson\DynamicLists;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
+
 /*
 
 Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -30,93 +31,98 @@ OF SUCH DAMAGE.
  * A dynamic list whose values are dependent on another list in the page.
  *
  * Relies on the DynamicList module for selecting which dynamic lists it is dependent
- * upon. 
+ * upon.
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class EditableDependentDynamicListField extends EditableDropdown {
-	private static $db = array(
-		'SourceList' => 'Varchar(512)',
-	);
+class EditableDependentDynamicListField extends EditableDropdown
+{
+    private static $db = array(
+        'SourceList' => 'Varchar(512)',
+    );
     
     private static $table_name = 'EditableDependentDynamicListField';
 
     private static $singular_name = 'Dependent Dynamic List field';
 
-	private static $plural_name = 'Dependent Dynamic List fields';
+    private static $plural_name = 'Dependent Dynamic List fields';
 
-	public function Icon() {
-		return 'userforms/images/editabledropdown.png';
-	}
+    public function Icon()
+    {
+        return 'userforms/images/editabledropdown.png';
+    }
 
-	public function getHasAddableOptions() {
-		return false;
-	}
+    public function getHasAddableOptions()
+    {
+        return false;
+    }
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
 
-		// select another form field that has the titles of the lists to use for this list when displayed
-		// The assumption being made here is that each entry in the source list has a corresponding dynamic list
-		// defined for it, which we use later on. 
-		$options = array();
-		if ($this->Parent()) {
-			$sourceList = $this->Parent()->Fields();
-			if ($sourceList) {
-				$options = $sourceList->map('Name', 'Title');
-			}
-		}
-		
-		$fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
+        // select another form field that has the titles of the lists to use for this list when displayed
+        // The assumption being made here is that each entry in the source list has a corresponding dynamic list
+        // defined for it, which we use later on.
+        $options = array();
+        if ($this->Parent()) {
+            $sourceList = $this->Parent()->Fields();
+            if ($sourceList) {
+                $options = $sourceList->map('Name', 'Title');
+            }
+        }
+        
+        $fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
 
-		return $fields;
-	}
+        return $fields;
+    }
 
-	function getFormField() {
-		$sourceList = $this->SourceList;
+    public function getFormField()
+    {
+        $sourceList = $this->SourceList;
 
-		// first off lets go and output all the options we need
-		$fields = $this->Parent()->Fields();
-		$source = null;
-		foreach ($fields as $field) {
-			if ($field->Name == $sourceList) {
-				$source = $field;
-				break;
-			}
-		}
+        // first off lets go and output all the options we need
+        $fields = $this->Parent()->Fields();
+        $source = null;
+        foreach ($fields as $field) {
+            if ($field->Name == $sourceList) {
+                $source = $field;
+                break;
+            }
+        }
 
-		$optionLists = array();
-		if ($source) {
-			// all our potential lists come from the source list's dynamic list source, so we need to go load that
-			// first, then iterate it and build all the additional required lists
-			$sourceList = DynamicList::get_dynamic_list($source->ListTitle);
-			if ($sourceList) {
-				$items = $sourceList->Items();
-				
-				// now lets create a bunch of option fields
-				foreach ($items as $sourceItem) {
-					// now get the dynamic list that is represented by this one
-					$list = DynamicList::get_dynamic_list($sourceItem->Title);
-					if ($list) {
-						$optionLists[$sourceItem->Title] = $sourceItem->Title;
-					}
-				}
-			}
+        $optionLists = array();
+        if ($source) {
+            // all our potential lists come from the source list's dynamic list source, so we need to go load that
+            // first, then iterate it and build all the additional required lists
+            $sourceList = DynamicList::get_dynamic_list($source->ListTitle);
+            if ($sourceList) {
+                $items = $sourceList->Items();
+                
+                // now lets create a bunch of option fields
+                foreach ($items as $sourceItem) {
+                    // now get the dynamic list that is represented by this one
+                    $list = DynamicList::get_dynamic_list($sourceItem->Title);
+                    if ($list) {
+                        $optionLists[$sourceItem->Title] = $sourceItem->Title;
+                    }
+                }
+            }
 
-			if (count($optionLists)) {
-				$field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name)->addExtraClass('uf-dependentdynamiclistdropdown');
-			}else{
-				$field = DropdownField::create($this->Name, $this->Title, array());
-			}
-			$field
-				->setFieldHolderTemplate('UserFormsField_holder')
-				->setTemplate('UserFormsDropdownField');
-			$this->doUpdateFormField($field);
-			return $field;
-		}
+            if (count($optionLists)) {
+                $field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name)->addExtraClass('uf-dependentdynamiclistdropdown');
+            } else {
+                $field = DropdownField::create($this->Name, $this->Title, array());
+            }
+            $field
+                ->setFieldHolderTemplate('UserFormsField_holder')
+                ->setTemplate('UserFormsDropdownField');
+            $this->doUpdateFormField($field);
+            return $field;
+        }
 
 
-		// return a new list
-		return new LiteralField($this->Name);
-	}
+        // return a new list
+        return new LiteralField($this->Name);
+    }
 }

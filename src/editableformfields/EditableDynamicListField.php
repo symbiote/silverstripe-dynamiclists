@@ -33,58 +33,62 @@ use \SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class EditableDynamicListField extends EditableDropdown {
+class EditableDynamicListField extends EditableDropdown
+{
 
-	private static $db = array(
-		'ListTitle' => 'Varchar(512)',
-	);
+    private static $db = array(
+        'ListTitle' => 'Varchar(512)',
+    );
 
     private static $table_name = 'EditableDynamicListField';
     
-	private static $singular_name = 'Dynamic List field';
-	private static $plural_name = 'Dynamic List fields';
+    private static $singular_name = 'Dynamic List field';
+    private static $plural_name = 'Dynamic List fields';
 
-	public function Icon() {
-		return 'userforms/images/editabledropdown.png';
-	}
+    public function Icon()
+    {
+        return 'userforms/images/editabledropdown.png';
+    }
 
-	public function getHasAddableOptions() {
-		return false;
-	}
+    public function getHasAddableOptions()
+    {
+        return false;
+    }
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->removeByName(array('Options'));
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $fields->removeByName(array('Options'));
 
-		// get a list of data lists to select from
-		$allLists = DataObject::get(DynamicList::class);
-		
-		$options = array('Please create a DynamicList!' => '(No DynamicLists available)');
-		
-		if ($allLists) {
-			/* @var $allLists DataObjectSet */
-			$options = $allLists->map('Title', 'Title');
-		}
-		
-		$fields->addFieldToTab('Root.Main', DropdownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
-		return $fields;
-	}
+        // get a list of data lists to select from
+        $allLists = DataObject::get(DynamicList::class);
+        
+        $options = array('Please create a DynamicList!' => '(No DynamicLists available)');
+        
+        if ($allLists) {
+            /* @var $allLists DataObjectSet */
+            $options = $allLists->map('Title', 'Title');
+        }
+        
+        $fields->addFieldToTab('Root.Main', DropdownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
+        return $fields;
+    }
 
-	public function getListTitle() {
-		if ($value = $this->getField('ListTitle'))
-		{
-			return $value;
-		}
-		// In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
-		return $this->getSetting('ListTitle');
-	}
+    public function getListTitle()
+    {
+        if ($value = $this->getField('ListTitle')) {
+            return $value;
+        }
+        // In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
+        return $this->getSetting('ListTitle');
+    }
 
-	function getFormField() {
-		$field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
-			->setFieldHolderTemplate('UserFormsField_holder')
-			->setTemplate('UserFormsDropdownField');
-		$this->doUpdateFormField($field);
-		return $field;
-	}
-
+    public function getFormField()
+    {
+        $field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
+            ->setFieldHolderTemplate('UserFormsField_holder')
+            ->setTemplate('UserFormsDropdownField');
+        $this->doUpdateFormField($field);
+        return $field;
+    }
 }

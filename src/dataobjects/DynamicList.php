@@ -17,130 +17,141 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  * @license BSD License http://silverstripe.org/bsd-license
  */
-class DynamicList extends DataObject {
+class DynamicList extends DataObject
+{
     
     private static $table_name = 'DynamicList';
     
     private static $db = array(
-		'Title' => 'Varchar(128)',
-		'CachedItems'	=> 'Text',
-	);
+        'Title' => 'Varchar(128)',
+        'CachedItems'   => 'Text',
+    );
 
-	private static $has_many = array(
-		'Items' => DynamicListItem::class,
-	);
-	
-	/**
-	 * Should list items be cached?
-	 *
-	 * @var boolean
-	 */
-	private static $cache_lists = false;
+    private static $has_many = array(
+        'Items' => DynamicListItem::class,
+    );
+    
+    /**
+     * Should list items be cached?
+     *
+     * @var boolean
+     */
+    private static $cache_lists = false;
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		
-		$fields->removeByName('CachedItems');
-		
-		if ($this->ID) {
-			$orderableComponent = new GridFieldOrderableRows('Sort');
-			$conf=GridFieldConfig_RelationEditor::create(20);
-			$conf->addComponent($orderableComponent);
-			$fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
-		}
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        
+        $fields->removeByName('CachedItems');
+        
+        if ($this->ID) {
+            $orderableComponent = new GridFieldOrderableRows('Sort');
+            $conf=GridFieldConfig_RelationEditor::create(20);
+            $conf->addComponent($orderableComponent);
+            $fields->addFieldToTab('Root.Items', new GridField('Items', 'Dynamic List Items', $this->Items(), $conf));
+        }
 
-		// Allow extension.
-		
-		$this->extend('updateDynamicListCMSFields', $fields);
-		return $fields;
-	}
+        // Allow extension.
+        
+        $this->extend('updateDynamicListCMSFields', $fields);
+        return $fields;
+    }
 
-	public function onBeforeDelete() {
-		parent::onBeforeDelete();
-		// delete all items that were attached
-		$items = $this->Items();
-		foreach ($items as $item) {
-			$item->delete();
-		}
-	}
+    public function onBeforeDelete()
+    {
+        parent::onBeforeDelete();
+        // delete all items that were attached
+        $items = $this->Items();
+        foreach ($items as $item) {
+            $item->delete();
+        }
+    }
 
-	public function canView($member = null) {
-		return true;
-	}
+    public function canView($member = null)
+    {
+        return true;
+    }
 
-	/**
-	 * @param Member $member
-	 * @return boolean
-	 */
-	public function canEdit($member = null) {
-		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
-	}
+    /**
+     * @param Member $member
+     * @return boolean
+     */
+    public function canEdit($member = null)
+    {
+        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+    }
 
-	/**
-	 * @param Member $member
-	 * @return boolean
-	 */
-	public function canDelete($member = null) {
-		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
-	}
+    /**
+     * @param Member $member
+     * @return boolean
+     */
+    public function canDelete($member = null)
+    {
+        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+    }
 
-	/**
-	 * @todo Should canCreate be a static method?
-	 *
-	 * @param Member $member
-	 * @return boolean
-	 */
-	public function canCreate($member = null, $context = array()) {
-		return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
-	}
+    /**
+     * @todo Should canCreate be a static method?
+     *
+     * @param Member $member
+     * @return boolean
+     */
+    public function canCreate($member = null, $context = array())
+    {
+        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+    }
 
-	/**
-	 * Convenience method for getting a data list
-	 *
-	 * @param String $title
-	 * @return DataObject
-	 */
-	public static function get_dynamic_list($title) {
-		$list = DynamicList::get()->filter('Title', $title)->first();
-		return $list;
-	}
+    /**
+     * Convenience method for getting a data list
+     *
+     * @param String $title
+     * @return DataObject
+     */
+    public static function get_dynamic_list($title)
+    {
+        $list = DynamicList::get()->filter('Title', $title)->first();
+        return $list;
+    }
 
-	public function getItemByTitle($title) {
-		$SQL_title = Convert::raw2sql($title);
-		$item = DataObject::get_one(DynamicListItem::class, "\"ListID\" = $this->ID AND \"Title\" = '{$SQL_title}'");
-		if (!$item || !$item->exists()) {
-			// create item
-			$item = new DynamicListItem();
-			$item->ListID = $this->ID;
-			$item->Title = $title;
-			$item->write();
-		}
+    public function getItemByTitle($title)
+    {
+        $SQL_title = Convert::raw2sql($title);
+        $item = DataObject::get_one(DynamicListItem::class, "\"ListID\" = $this->ID AND \"Title\" = '{$SQL_title}'");
+        if (!$item || !$item->exists()) {
+            // create item
+            $item = new DynamicListItem();
+            $item->ListID = $this->ID;
+            $item->Title = $title;
+            $item->write();
+        }
 
-		return $item;
-	}
+        return $item;
+    }
 
-	public function cacheListData() {
-		$items = $this->Items();
-		if ($items) {
-			$mapped = array();
-			foreach ($items as $i) {
-				$mapped[$i->ID] = $i->Title;
-			}
-		}
-	}
-	
-	/**
-	 * Get a map of ID => Title for the contained items in this list
-	 */
-	public function itemArray() {
-		if ($this->config()->cache_lists) {
-			$str = $this->CachedItems;
-			if (strlen($str) && $items = @unserialize($str)) {
-				return $items;
-			}
-		}
+    public function cacheListData()
+    {
+        $items = $this->Items();
+        if ($items) {
+            $mapped = array();
+            foreach ($items as $i) {
+                $mapped[$i->ID] = $i->Title;
+            }
+        }
+    }
+    
+    /**
+     * Get a map of ID => Title for the contained items in this list
+     */
+    public function itemArray()
+    {
+        if ($this->config()->cache_lists) {
+            $str = $this->CachedItems;
+            if (strlen($str) && $items = @unserialize($str)) {
+                return $items;
+            }
+        }
 
-		$mapped = $this->Items()->map()->toArray();
-		return $mapped;
-	}
+        $mapped = $this->Items()->map()->toArray();
+        return $mapped;
+    }
 }
