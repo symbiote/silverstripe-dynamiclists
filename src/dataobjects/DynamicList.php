@@ -18,6 +18,9 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  * @license BSD License http://silverstripe.org/bsd-license
  */
 class DynamicList extends DataObject {
+    
+    private static $table_name = 'DynamicList';
+    
     private static $db = array(
 		'Title' => 'Varchar(128)',
 		'CachedItems'	=> 'Text',
@@ -104,7 +107,7 @@ class DynamicList extends DataObject {
 
 	public function getItemByTitle($title) {
 		$SQL_title = Convert::raw2sql($title);
-		$item = DataObject::get_one('DynamicListItem', "\"ListID\" = $this->ID AND \"Title\" = '{$SQL_title}'");
+		$item = DataObject::get_one(DynamicListItem::class, "\"ListID\" = $this->ID AND \"Title\" = '{$SQL_title}'");
 		if (!$item || !$item->exists()) {
 			// create item
 			$item = new DynamicListItem();

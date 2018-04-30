@@ -4,6 +4,7 @@ namespace sheadawson\DynamicLists;
 
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
+use SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
 /*
 
 Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
@@ -33,15 +34,16 @@ OF SUCH DAMAGE.
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-if(class_exists('EditableDropdown')) {
 class EditableDependentDynamicListField extends EditableDropdown {
 	private static $db = array(
 		'SourceList' => 'Varchar(512)',
 	);
+    
+    private static $table_name = 'EditableDependentDynamicListField';
 
-    static $singular_name = 'Dependent Dynamic List field';
+    private static $singular_name = 'Dependent Dynamic List field';
 
-	static $plural_name = 'Dependent Dynamic List fields';
+	private static $plural_name = 'Dependent Dynamic List fields';
 
 	public function Icon() {
 		return 'userforms/images/editabledropdown.png';
@@ -68,15 +70,6 @@ class EditableDependentDynamicListField extends EditableDropdown {
 		$fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
 
 		return $fields;
-	}
-
-	public function getSourceList() {
-		if ($value = $this->getField('SourceList'))
-		{
-			return $value;
-		}
-		// In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
-		return $this->getSetting('SourceList');
 	}
 
 	function getFormField() {
@@ -126,5 +119,4 @@ class EditableDependentDynamicListField extends EditableDropdown {
 		// return a new list
 		return new LiteralField($this->Name);
 	}
-}
 }

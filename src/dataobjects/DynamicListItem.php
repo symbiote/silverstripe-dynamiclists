@@ -14,6 +14,9 @@ use SilverStripe\ORM\DataObject;
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class DynamicListItem extends DataObject {
+    
+    private static $table_name = 'DynamicListItem';
+    
     private static $db = array(
 		'Title' => 'Varchar(128)',
 		'Sort' => 'Int',
@@ -39,10 +42,10 @@ class DynamicListItem extends DataObject {
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
-		if (!$this->Sort) {
-			$parentID = ($this->ListID) ? $this->ListID : 0;
-			$this->Sort = DB::query("SELECT MAX(\"Sort\") + 1 FROM \"DynamicListItem\" WHERE \"ListID\" = $parentID")->value();
-		}
+//		if (!$this->Sort) {
+//			$parentID = ($this->ListID) ? $this->ListID : 0;
+//			$this->Sort = DB::query("SELECT MAX(\"Sort\") + 1 FROM \"DynamicListItem\" WHERE \"ListID\" = $parentID")->value();
+//		}
 	}
 	
 	public function onAfterWrite() {

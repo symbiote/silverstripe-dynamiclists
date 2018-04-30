@@ -4,6 +4,7 @@ namespace sheadawson\DynamicLists;
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\DropdownField;
+use \SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
 
 /*
 
@@ -32,15 +33,16 @@ use SilverStripe\Forms\DropdownField;
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-if(class_exists('EditableDropdown')) {
 class EditableDynamicListField extends EditableDropdown {
 
 	private static $db = array(
 		'ListTitle' => 'Varchar(512)',
 	);
 
-	static $singular_name = 'Dynamic List field';
-	static $plural_name = 'Dynamic List fields';
+    private static $table_name = 'EditableDynamicListField';
+    
+	private static $singular_name = 'Dynamic List field';
+	private static $plural_name = 'Dynamic List fields';
 
 	public function Icon() {
 		return 'userforms/images/editabledropdown.png';
@@ -55,7 +57,7 @@ class EditableDynamicListField extends EditableDropdown {
 		$fields->removeByName(array('Options'));
 
 		// get a list of data lists to select from
-		$allLists = DataObject::get('DynamicList');
+		$allLists = DataObject::get(DynamicList::class);
 		
 		$options = array('Please create a DynamicList!' => '(No DynamicLists available)');
 		
@@ -85,5 +87,4 @@ class EditableDynamicListField extends EditableDropdown {
 		return $field;
 	}
 
-}
 }

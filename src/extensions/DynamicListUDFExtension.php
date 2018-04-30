@@ -6,6 +6,8 @@ use SilverStripe\Versioned\Versioned;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\UserForms\Model\EditableFormField;
+use SilverStripe\UserForms\Model\UserDefinedForm;
 
 /**
  *	This extension is to help identify dynamic lists a little better.
@@ -22,10 +24,10 @@ class DynamicListUDFExtension extends DataExtension {
 
 		// Make sure the draft records are being looked at.
 
-		$stage = Versioned::current_stage();
-		Versioned::reading_stage('Stage');
+		$stage = Versioned::get_stage();
+		Versioned::set_stage('Stage');
 		$used = EditableFormField::get()->filter(array(
-			'ClassName:PartialMatch' => 'DynamicList'
+			'ClassName:PartialMatch' => DynamicList::class
 		));
 
 		// Determine whether this dynamic list is being used anywhere.
@@ -54,7 +56,7 @@ class DynamicListUDFExtension extends DataExtension {
 		$display = count($found) ? implode('<br>', $found) : 'This dynamic list is <strong>not</strong> used.';
 		$fields->removeByName('UsedOn');
 		$fields->addFieldToTab('Root.Main', LiteralField::create('UsedOn', '<div>' . $display . '</div>'));
-		Versioned::reading_stage($stage);
+		Versioned::set_stage($stage);
 	}
 
 }

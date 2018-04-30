@@ -1,3 +1,3 @@
 <?php
 
-namespace sheadawson\dynamiclists;
+namespace sheadawson\DynamicLists;
