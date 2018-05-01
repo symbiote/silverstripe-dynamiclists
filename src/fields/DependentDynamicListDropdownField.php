@@ -60,9 +60,9 @@ class DependentDynamicListDropdownField extends DynamicListField
     public function Field($properties = array())
     {
 
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
-        Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-        Requirements::javascript(DYNAMICLIST_MODULE . '/javascript/DependentDynamicListDropdownField.js');
+        Requirements::javascript('//code.jquery.com/jquery-1.7.2.min.js');
+        Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
+        Requirements::javascript('sheadawson/silverstripe-dynamiclists:/javascript/DependentDynamicListDropdownField.js');
 
         $listItems = array();
 
