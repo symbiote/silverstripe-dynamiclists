@@ -74,15 +74,6 @@ class EditableDynamicListField extends EditableDropdown
         return $fields;
     }
 
-    public function getListTitle()
-    {
-        if ($value = $this->getField('ListTitle')) {
-            return $value;
-        }
-        // In the case that 'DynamicListUserFormsUpgradeTask' hasn't been run, fallback to old User Forms 2.x value.
-        return $this->getSetting('ListTitle');
-    }
-
     public function getFormField()
     {
         $field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
