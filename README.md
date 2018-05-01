@@ -8,7 +8,7 @@ in a central location that might be used across several forms.
 ## Composer Install
 
 ```
-composer require sheadawson/silverstripe-dynamiclists:~2.0
+composer require symbiote/silverstripe-dynamiclists:~2.0
 ```
 
 ## Requirements

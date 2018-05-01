@@ -1,6 +1,6 @@
 <?php
 
-namespace sheadawson\DynamicLists;
+namespace Symbiote\DynamicLists;
 
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridField;

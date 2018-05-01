@@ -1,6 +1,6 @@
 <?php
 
-namespace sheadawson\DynamicLists;
+namespace Symbiote\DynamicLists;
 
 use SilverStripe\View\Requirements;
 use SilverStripe\Core\Convert;
@@ -62,7 +62,7 @@ class DependentDynamicListDropdownField extends DynamicListField
 
         Requirements::javascript('//code.jquery.com/jquery-1.7.2.min.js');
         Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
-        Requirements::javascript('sheadawson/silverstripe-dynamiclists:/javascript/DependentDynamicListDropdownField.js');
+        Requirements::javascript('symbiote/silverstripe-dynamiclists:/javascript/DependentDynamicListDropdownField.js');
 
         $listItems = array();
 

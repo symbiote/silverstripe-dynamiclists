@@ -2,6 +2,6 @@
 Only:
   moduleexists: 'silverstripe/userforms'
 ---
-sheadawson\DynamicLists\DynamicList:
+Symbiote\DynamicLists\DynamicList:
   extensions:
-    - 'sheadawson\DynamicLists\DynamicListUDFExtension'
+    - 'Symbiote\DynamicLists\DynamicListUDFExtension'

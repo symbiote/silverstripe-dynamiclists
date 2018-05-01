@@ -1,6 +1,6 @@
 <?php
 
-namespace sheadawson\DynamicLists;
+namespace Symbiote\DynamicLists;
 
 use SilverStripe\ORM\DB;
 use SilverStripe\Security\Permission;
