@@ -5,44 +5,17 @@ language: php
 dist: trusty
 
 php:
-  # Silverstripe 3.x
-  # NOTE: Travis-CI is only supporting PHP 5.4+ from late 2017.
-  - 5.4
   # Silverstripe 4
   - 5.5
 
 env:
   matrix:
-    #
-    # Silverstripe 3.x
-    #
-    - DB=MYSQL CORE_RELEASE=3.1
     # Silverstripe 4
     #
     - DB=MYSQL CORE_RELEASE=4
 
 matrix:
   include:
-    #
-    # Silverstripe 3.x
-    #
-    - php: 5.4
-      env:
-        - DB=MYSQL
-        - CORE_RELEASE=3.1
-    - php: 5.4
-      env:
-        - DB=PGSQL
-        - CORE_RELEASE=3.2
-    - php: 5.5
-      env:
-        - DB=MYSQL
-        - CORE_RELEASE=3.3
-    - php: 5.6
-      env:
-        - DB=MYSQL
-        - PHPCS_TEST=1
-        - CORE_RELEASE=3
     #
     # Silverstripe 4
     #
@@ -60,15 +33,6 @@ matrix:
 
 before_script:
   #
-  # Silverstripe 3
-  #
-  - composer self-update || true
-  - phpenv rehash
-  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
-  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
-  - cd ~/builds/ss
-
-  #
   # Silverstripe 4
   #
   - phpenv rehash
@@ -79,11 +43,6 @@ before_script:
   - composer install --prefer-dist --no-interaction --no-progress --no-suggest --optimize-autoloader --verbose --profile
 
 script:
-  #
-  # Silverstripe 3
-  #
-  - if [[ $PHPCS_TEST ]]; then vendor/bin/phpcs YOUR_MODULE_NAME/src/ YOUR_MODULE_NAME/tests/ -n; fi
-  - vendor/bin/phpunit YOUR_MODULE_NAME/tests/
   #
   # Silverstripe 4
   #
