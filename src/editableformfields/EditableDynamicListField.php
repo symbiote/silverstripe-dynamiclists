@@ -41,7 +41,7 @@ class EditableDynamicListField extends EditableDropdown
     );
 
     private static $table_name = 'EditableDynamicListField';
-    
+
     private static $singular_name = 'Dynamic List field';
     private static $plural_name = 'Dynamic List fields';
 
@@ -62,14 +62,14 @@ class EditableDynamicListField extends EditableDropdown
 
         // get a list of data lists to select from
         $allLists = DataObject::get(DynamicList::class);
-        
+
         $options = array('Please create a DynamicList!' => '(No DynamicLists available)');
-        
+
         if ($allLists) {
             /* @var $allLists DataObjectSet */
             $options = $allLists->map('Title', 'Title');
         }
-        
+
         $fields->addFieldToTab('Root.Main', DropdownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
         return $fields;
     }
@@ -79,6 +79,9 @@ class EditableDynamicListField extends EditableDropdown
         $field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
             ->setFieldHolderTemplate('UserFormsField_holder')
             ->setTemplate('UserFormsDropdownField');
+        if ($this->UseEmptyString) {
+            $field->setEmptyString(($this->EmptyString) ? $this->EmptyString : '');
+        }
         $this->doUpdateFormField($field);
         return $field;
     }
