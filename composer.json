@@ -21,5 +21,8 @@
 			"dev-master": "2.0.x-dev"
 		}
     },
+	"replace": {
+		"sheadawson/silverstripe-dynamiclists": "self.version"
+	},
 	"minimum-stability": "dev"
 }
