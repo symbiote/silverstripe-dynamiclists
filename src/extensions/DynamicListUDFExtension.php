@@ -11,7 +11,7 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 
 /**
  *  This extension is to help identify dynamic lists a little better.
- *  @author Nathan Glasl <nathan@silverstripe.com.au>
+ *  @author Nathan Glasl <nathan@symbiote.com.au>
  */
 
 class DynamicListUDFExtension extends DataExtension

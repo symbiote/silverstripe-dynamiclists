@@ -8,7 +8,7 @@ use \SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
 
 /*
 
-  Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
+  Copyright (c) 2009, Symbiote
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@ use \SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  * An editable field that can use a data list for its
  * fields
  *
- * @author Marcus Nyeholt <marcus@silverstripe.com.au>
+ * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
 class EditableDynamicListField extends EditableDropdown
 {

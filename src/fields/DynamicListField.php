@@ -7,7 +7,7 @@ use SilverStripe\Forms\DropdownField;
 /**
  * A select field that takes its inputs from a data list
  *
- * @author Marcus Nyeholt <marcus@silverstripe.com.au>
+ * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
 class DynamicListField extends DropdownField
 {

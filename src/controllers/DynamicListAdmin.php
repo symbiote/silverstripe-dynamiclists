@@ -6,7 +6,7 @@ use SilverStripe\Admin\ModelAdmin;
 
 /*
 
-Copyright (c) 2009, SilverStripe Australia PTY LTD - www.silverstripe.com.au
+Copyright (c) 2009, Symbiote
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -26,7 +26,7 @@ OF SUCH DAMAGE.
 */
 
 /**
- * @author Marcus Nyeholt <marcus@silverstripe.com.au>
+ * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
 class DynamicListAdmin extends ModelAdmin
 {

@@ -11,7 +11,7 @@ use SilverStripe\ORM\DataObject;
  * for a variety of areas in the site where a predefined list is used
  * using the DynamicListField form control.
  *
- * @author Marcus Nyeholt <marcus@silverstripe.com.au>
+ * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
 class DynamicListItem extends DataObject
 {

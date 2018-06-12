@@ -8,7 +8,7 @@ use SilverStripe\Forms\CheckboxSetField;
 
 /*
  * A CheckboxSetField field that takes its inputs from a DynamicList
- * @author Shea Dawson <shea@silverstripe.com.au>
+ * @author Shea Dawson <shea@symbiote.com.au>
  */
 class DynamicListCheckboxSetField extends CheckboxSetField
 {
