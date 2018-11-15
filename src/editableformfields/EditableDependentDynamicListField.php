@@ -35,12 +35,17 @@ OF SUCH DAMAGE.
  *
  * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
+
+if (!class_exists(EditableDropdown::class)) {
+    return;
+}
+
 class EditableDependentDynamicListField extends EditableDropdown
 {
     private static $db = array(
         'SourceList' => 'Varchar(512)',
     );
-    
+
     private static $table_name = 'EditableDependentDynamicListField';
 
     private static $singular_name = 'Dependent Dynamic List field';
@@ -71,7 +76,7 @@ class EditableDependentDynamicListField extends EditableDropdown
                 $options = $sourceList->map('Name', 'Title');
             }
         }
-        
+
         $fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
 
         return $fields;
@@ -98,7 +103,7 @@ class EditableDependentDynamicListField extends EditableDropdown
             $sourceList = DynamicList::get_dynamic_list($source->ListTitle);
             if ($sourceList) {
                 $items = $sourceList->Items();
-                
+
                 // now lets create a bunch of option fields
                 foreach ($items as $sourceItem) {
                     // now get the dynamic list that is represented by this one

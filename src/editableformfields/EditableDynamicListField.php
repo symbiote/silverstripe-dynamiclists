@@ -33,6 +33,11 @@ use \SilverStripe\UserForms\Model\EditableFormField\EditableDropdown;
  *
  * @author Marcus Nyeholt <marcus@symbiote.com.au>
  */
+
+if (!class_exists(EditableDropdown::class)) {
+    return;
+}
+
 class EditableDynamicListField extends EditableDropdown
 {
 
