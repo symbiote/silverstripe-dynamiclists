@@ -71,7 +71,7 @@ class DynamicListItem extends DataObject
      */
     public function canEdit($member = null)
     {
-        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+        return Permission::check('CMS_ACCESS_Symbiote\DynamicLists\DynamicListAdmin', 'any', $member);
     }
 
     /**
@@ -80,7 +80,7 @@ class DynamicListItem extends DataObject
      */
     public function canDelete($member = null)
     {
-        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+        return Permission::check('CMS_ACCESS_Symbiote\DynamicLists\DynamicListAdmin', 'any', $member);
     }
 
     /**
@@ -91,6 +91,6 @@ class DynamicListItem extends DataObject
      */
     public function canCreate($member = null, $context = array())
     {
-        return Permission::check('CMS_ACCESS_DynamicListAdmin', 'any', $member);
+        return Permission::check('CMS_ACCESS_Symbiote\DynamicLists\DynamicListAdmin', 'any', $member);
     }
 }
