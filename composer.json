@@ -16,6 +16,9 @@
         "symbiote/silverstripe-gridfieldextensions": "~3.0"
 	},
 	"extra": {
+        "expose": [
+            "javascript"
+        ],        
 		"installer-name": "dynamiclists",
 		"branch-alias": {
 			"dev-master": "2.0.x-dev"
