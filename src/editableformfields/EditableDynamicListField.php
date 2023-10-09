@@ -82,8 +82,8 @@ class EditableDynamicListField extends EditableDropdown
     public function getFormField()
     {
         $field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
-            ->setFieldHolderTemplate('UserFormsField_holder')
-            ->setTemplate('UserFormsDropdownField');
+            ->setFieldHolderTemplate(EditableFormField::class . '_holder')
+            ->setTemplate(__CLASS__);
         if ($this->UseEmptyString) {
             $field->setEmptyString(($this->EmptyString) ? $this->EmptyString : '');
         }
