@@ -120,8 +120,8 @@ class EditableDependentDynamicListField extends EditableDropdown
                 $field = DropdownField::create($this->Name, $this->Title, array());
             }
             $field
-                ->setFieldHolderTemplate('UserFormsField_holder')
-                ->setTemplate('UserFormsDropdownField');
+                ->setFieldHolderTemplate(EditableFormField::class . '_holder')
+                ->setTemplate(__CLASS__);
             $this->doUpdateFormField($field);
             return $field;
         }
