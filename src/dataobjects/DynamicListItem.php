@@ -15,24 +15,24 @@ use SilverStripe\ORM\DataObject;
  */
 class DynamicListItem extends DataObject
 {
-    
+
     private static $table_name = 'DynamicListItem';
-    
-    private static $db = array(
+
+    private static $db = [
         'Title' => 'Varchar(128)',
-        'Sort' => 'Int',
-    );
+        'Sort' => 'Int'
+    ];
 
-    private static $has_one = array(
+    private static $has_one = [
         'List' => DynamicList::class
-    );
+    ];
 
-    private static $summary_fields = array(
+    private static $summary_fields = [
         'Title'
-    );
+    ];
 
     private static $default_sort = 'Sort, ID';
-    
+
 
     public function getCMSFields()
     {
@@ -50,7 +50,7 @@ class DynamicListItem extends DataObject
 //          $this->Sort = DB::query("SELECT MAX(\"Sort\") + 1 FROM \"DynamicListItem\" WHERE \"ListID\" = $parentID")->value();
 //      }
     }
-    
+
     public function onAfterWrite()
     {
         if ($list = $this->List()) {
@@ -59,12 +59,12 @@ class DynamicListItem extends DataObject
             }
         }
     }
-    
+
     public function canView($member = null)
     {
         return true;
     }
-    
+
     /**
      * @param Member $member
      * @return boolean
@@ -89,7 +89,7 @@ class DynamicListItem extends DataObject
      * @param Member $member
      * @return boolean
      */
-    public function canCreate($member = null, $context = array())
+    public function canCreate($member = null, $context = [])
     {
         return Permission::check('CMS_ACCESS_Symbiote\DynamicLists\DynamicListAdmin', 'any', $member);
     }
