@@ -30,7 +30,6 @@ OF SUCH DAMAGE.
  */
 class DynamicListAdmin extends ModelAdmin
 {
-
     private static $url_segment = 'dynamiclistadmin';
     private static $menu_title = "Dynamic Lists";
 

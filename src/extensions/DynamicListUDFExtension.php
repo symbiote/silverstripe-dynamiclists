@@ -16,7 +16,6 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 
 class DynamicListUDFExtension extends DataExtension
 {
-
     private static $default_sort = 'Title';
 
     public function updateDynamicListCMSFields($fields)

@@ -19,7 +19,6 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  */
 class DynamicList extends DataObject
 {
-
     private static $table_name = 'DynamicList';
 
     private static $db = [

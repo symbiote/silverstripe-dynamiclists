@@ -11,7 +11,6 @@ use SilverStripe\Forms\DropdownField;
  */
 class DynamicListField extends DropdownField
 {
-
     protected $extraClasses = [
         'dropdown'
     ];

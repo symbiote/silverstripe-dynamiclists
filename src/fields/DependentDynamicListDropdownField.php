@@ -85,7 +85,7 @@ class DependentDynamicListDropdownField extends DynamicListField
                 $listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
             }
         }
-        $this->setAttribute('data-listoptions', Convert::raw2json($listItems));
+        $this->setAttribute('data-listoptions', json_encode($listItems));
         $this->setAttribute('data-dependentOn', $this->dependentOn);
 
         if ($this->value) {

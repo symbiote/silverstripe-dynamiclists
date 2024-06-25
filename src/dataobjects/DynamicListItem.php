@@ -15,7 +15,6 @@ use SilverStripe\ORM\DataObject;
  */
 class DynamicListItem extends DataObject
 {
-
     private static $table_name = 'DynamicListItem';
 
     private static $db = [

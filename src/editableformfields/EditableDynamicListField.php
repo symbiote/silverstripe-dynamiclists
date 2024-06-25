@@ -40,7 +40,6 @@ if (!class_exists(EditableDropdown::class)) {
 
 class EditableDynamicListField extends EditableDropdown
 {
-
     private static $db = [
         'ListTitle' => 'Varchar(512)'
     ];
