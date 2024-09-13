@@ -8,12 +8,12 @@ in a central location that might be used across several forms.
 ## Composer Install
 
 ```
-composer require symbiote/silverstripe-dynamiclists:~2.0
+composer require symbiote/silverstripe-dynamiclists: ^2
 ```
 
 ## Requirements
 
-* SilverStripe 4.0+
+* SilverStripe 4 & 5
 
 ## Documentation
 

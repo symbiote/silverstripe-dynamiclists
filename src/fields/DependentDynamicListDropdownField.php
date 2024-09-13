@@ -46,25 +46,27 @@ class DependentDynamicListDropdownField extends DynamicListField
      */
     protected $dependentOn;
 
-    protected $extraClasses = array('dropdown');
+    protected $extraClasses = [
+        'dropdown'
+    ];
 
     public function __construct($name, $title = null, $dynamicLists = null, $dependentOn = '', $value = "", $form = null, $emptyString = null)
     {
         $this->dependentLists = $dynamicLists;
         $this->dependentOn = $dependentOn;
 
-        parent::__construct($name, $title, array(), $value, $form, $emptyString);
+        parent::__construct($name, $title, [], $value, $form, $emptyString);
     }
 
 
-    public function Field($properties = array())
+    public function Field($properties = [])
     {
 
-        Requirements::javascript('//code.jquery.com/jquery-1.7.2.min.js');
-        Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
+        Requirements::javascript('https://code.jquery.com/jquery-3.7.1.min.js');
+        Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/jquery.entwine.js');
         Requirements::javascript('symbiote/silverstripe-dynamiclists:/javascript/DependentDynamicListDropdownField.js');
 
-        $listItems = array();
+        $listItems = [];
 
         if (is_string($this->dependentLists)) {
             $list = DynamicList::get_dynamic_list($this->dependentLists);
@@ -74,7 +76,7 @@ class DependentDynamicListDropdownField extends DynamicListField
         }
 
         if (!is_array($this->dependentLists)) {
-            $this->dependentLists = array();
+            $this->dependentLists = [];
         }
 
         foreach ($this->dependentLists as $k => $v) {
@@ -83,7 +85,7 @@ class DependentDynamicListDropdownField extends DynamicListField
                 $listItems[$k] = $list->Items()->map('Title', 'Title')->toArray();
             }
         }
-        $this->setAttribute('data-listoptions', Convert::raw2json($listItems));
+        $this->setAttribute('data-listoptions', json_encode($listItems));
         $this->setAttribute('data-dependentOn', $this->dependentOn);
 
         if ($this->value) {
@@ -103,11 +105,11 @@ class DependentDynamicListDropdownField extends DynamicListField
     {
         // Source isn't pulled in correctly and we're going to rectify this
         // later on, so this can be an empty array for now.
-        $source = array();
+        $source = [];
         $disabled = $this->getDisabledItems();
 
         // Grab the parent list we're trying to validate against first so we can refer to it.
-        if (strpos($this->dependentOn, '.') !== false) {
+        if (str_contains($this->dependentOn, '.')) {
             $parentListName = $this->getForm()->Fields()->fieldByName($this->dependentOn)->value;
         } else {
             $parentListName = $this->getForm()->Fields()->dataFieldByName($this->dependentOn)->value;
@@ -130,7 +132,7 @@ class DependentDynamicListDropdownField extends DynamicListField
                 _t(
                     'DropdownField.SOURCE_VALIDATION',
                     "Please select a value within the list provided. {value} is not a valid option",
-                    array('value' => $this->value)
+                    ['value' => $this->value]
                 ),
                 "validation"
             );
