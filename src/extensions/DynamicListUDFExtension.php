@@ -16,10 +16,7 @@ use SilverStripe\UserForms\Model\UserDefinedForm;
 
 class DynamicListUDFExtension extends DataExtension
 {
-
-    private static $default_sort = array(
-        'Title'
-    );
+    private static $default_sort = 'Title';
 
     public function updateDynamicListCMSFields($fields)
     {
@@ -28,13 +25,11 @@ class DynamicListUDFExtension extends DataExtension
 
         $stage = Versioned::get_stage();
         Versioned::set_stage('Stage');
-        $used = EditableFormField::get()->filter(array(
-            'ClassName:PartialMatch' => DynamicList::class
-        ));
+        $used = EditableFormField::get()->filter(['ClassName:PartialMatch' => DynamicList::class]);
 
         // Determine whether this dynamic list is being used anywhere.
 
-        $found = array();
+        $found = [];
         foreach ($used as $field) {
             // This information is stored using a serialised list, therefore we need to iterate through.
 

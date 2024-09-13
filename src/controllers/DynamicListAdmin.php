@@ -30,12 +30,14 @@ OF SUCH DAMAGE.
  */
 class DynamicListAdmin extends ModelAdmin
 {
-    
     private static $url_segment = 'dynamiclistadmin';
     private static $menu_title = "Dynamic Lists";
 
-    private static $managed_models = array(DynamicList::class);
-    private static $model_importers = array(
-        DynamicList::class => DynamicListCsvLoader::class,
-    );
+    private static $managed_models = [
+        DynamicList::class
+    ];
+
+    private static $model_importers = [
+        DynamicList::class => DynamicListCsvLoader::class
+    ];
 }

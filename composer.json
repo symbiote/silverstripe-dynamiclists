@@ -1,31 +1,29 @@
 {
-  "name": "symbiote/silverstripe-dynamiclists",
-	"description": "A Module that allows users to create custom data lists. These lists can then be used in a form control (specified via code by a developer) or within a user defined form to be able to define controlled vocabularies managed in a central location that might be used across several forms.",
-	"type": "silverstripe-vendormodule",
-	"license": "BSD-3-Clause",
-	"authors": [
-    {
-        "name": "Shea Dawson",
-        "email": "shea@symbiote.com.au"
-    }
+    "name": "symbiote/silverstripe-dynamiclists",
+    "description": "A Module that allows users to create custom data lists. These lists can then be used in a form control (specified via code by a developer) or within a user defined form to be able to define controlled vocabularies managed in a central location that might be used across several forms.",
+    "type": "silverstripe-vendormodule",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Shea Dawson",
+            "email": "shea@symbiote.com.au"
+        }
     ],
-	"require": {
-		"php": ">=5.6.0",
-        "silverstripe/cms": "~4.0",
-        "silverstripe/framework": "~4.0",
-        "symbiote/silverstripe-gridfieldextensions": "~3.0"
-	},
-	"extra": {
+    "require": {
+        "php": "^8.1",
+        "silverstripe/cms": "^4.12 || ^5",
+        "symbiote/silverstripe-gridfieldextensions": "^3 || ^4"
+    },
+    "extra": {
         "expose": [
             "javascript"
-        ],        
-		"installer-name": "dynamiclists",
-		"branch-alias": {
-			"dev-master": "2.0.x-dev"
-		}
+        ],
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
     },
-	"replace": {
-		"sheadawson/silverstripe-dynamiclists": "self.version"
-	},
-	"minimum-stability": "dev"
+    "replace": {
+        "sheadawson/silverstripe-dynamiclists": "self.version"
+    },
+    "minimum-stability": "dev"
 }

@@ -19,18 +19,17 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  */
 class DynamicList extends DataObject
 {
-    
     private static $table_name = 'DynamicList';
-    
-    private static $db = array(
-        'Title' => 'Varchar(128)',
-        'CachedItems'   => 'Text',
-    );
 
-    private static $has_many = array(
-        'Items' => DynamicListItem::class,
-    );
-    
+    private static $db = [
+        'Title' => 'Varchar(128)',
+        'CachedItems'   => 'Text'
+    ];
+
+    private static $has_many = [
+        'Items' => DynamicListItem::class
+    ];
+
     /**
      * Should list items be cached?
      *
@@ -41,9 +40,9 @@ class DynamicList extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        
+
         $fields->removeByName('CachedItems');
-        
+
         if ($this->ID) {
             $orderableComponent = new GridFieldOrderableRows('Sort');
             $conf=GridFieldConfig_RelationEditor::create(20);
@@ -52,7 +51,7 @@ class DynamicList extends DataObject
         }
 
         // Allow extension.
-        
+
         $this->extend('updateDynamicListCMSFields', $fields);
         return $fields;
     }
@@ -96,7 +95,7 @@ class DynamicList extends DataObject
      * @param Member $member
      * @return boolean
      */
-    public function canCreate($member = null, $context = array())
+    public function canCreate($member = null, $context = [])
     {
         return Permission::check('CMS_ACCESS_Symbiote\DynamicLists\DynamicListAdmin', 'any', $member);
     }
@@ -132,13 +131,13 @@ class DynamicList extends DataObject
     {
         $items = $this->Items();
         if ($items) {
-            $mapped = array();
+            $mapped = [];
             foreach ($items as $i) {
                 $mapped[$i->ID] = $i->Title;
             }
         }
     }
-    
+
     /**
      * Get a map of ID => Title for the contained items in this list
      */

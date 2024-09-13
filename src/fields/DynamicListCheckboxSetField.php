@@ -15,13 +15,13 @@ class DynamicListCheckboxSetField extends CheckboxSetField
     public function __construct($name, $title = null, $source = null, $value = "", $form = null, $emptyString = null)
     {
         if (!$source) {
-            $source = array();
+            $source = [];
         }
 
         if (is_string($source)) {
             // it should be the name of a list, lets get all its contents
             $dynamicList = DynamicList::get_dynamic_list($source);
-            $source = array();
+            $source = [];
             if ($dynamicList) {
                 $items = $dynamicList->Items();
                 foreach ($items as $item) {

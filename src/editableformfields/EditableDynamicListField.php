@@ -40,10 +40,9 @@ if (!class_exists(EditableDropdown::class)) {
 
 class EditableDynamicListField extends EditableDropdown
 {
-
-    private static $db = array(
-        'ListTitle' => 'Varchar(512)',
-    );
+    private static $db = [
+        'ListTitle' => 'Varchar(512)'
+    ];
 
     private static $table_name = 'EditableDynamicListField';
 
@@ -63,19 +62,28 @@ class EditableDynamicListField extends EditableDropdown
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName(array('Options'));
+        $fields->removeByName(['Options']);
 
         // get a list of data lists to select from
         $allLists = DataObject::get(DynamicList::class);
 
-        $options = array('Please create a DynamicList!' => '(No DynamicLists available)');
+        $options = [
+            'Please create a DynamicList!' => '(No DynamicLists available)'
+        ];
 
         if ($allLists) {
             /* @var $allLists DataObjectSet */
             $options = $allLists->map('Title', 'Title');
         }
 
-        $fields->addFieldToTab('Root.Main', DropdownField::create('ListTitle', _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'), $options));
+        $fields->addFieldToTab(
+            'Root.Main',
+            DropdownField::create(
+                'ListTitle',
+                _t('EditableDataListField.DYNAMICLIST_TITLE', 'List Title'),
+                $options
+            )
+        );
         return $fields;
     }
 
@@ -83,9 +91,9 @@ class EditableDynamicListField extends EditableDropdown
     {
         $field = DynamicListField::create($this->Name, $this->Title, $this->ListTitle)
             ->setFieldHolderTemplate(EditableFormField::class . '_holder')
-            ->setTemplate(__CLASS__);
+            ->setTemplate(self::class);
         if ($this->UseEmptyString) {
-            $field->setEmptyString(($this->EmptyString) ? $this->EmptyString : '');
+            $field->setEmptyString($this->EmptyString ?: '');
         }
         $this->doUpdateFormField($field);
         return $field;

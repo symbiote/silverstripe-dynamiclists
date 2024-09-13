@@ -42,9 +42,9 @@ if (!class_exists(EditableDropdown::class)) {
 
 class EditableDependentDynamicListField extends EditableDropdown
 {
-    private static $db = array(
-        'SourceList' => 'Varchar(512)',
-    );
+    private static $db = [
+        'SourceList' => 'Varchar(512)'
+    ];
 
     private static $table_name = 'EditableDependentDynamicListField';
 
@@ -69,7 +69,7 @@ class EditableDependentDynamicListField extends EditableDropdown
         // select another form field that has the titles of the lists to use for this list when displayed
         // The assumption being made here is that each entry in the source list has a corresponding dynamic list
         // defined for it, which we use later on.
-        $options = array();
+        $options = [];
         if ($this->Parent()) {
             $sourceList = $this->Parent()->Fields();
             if ($sourceList) {
@@ -77,7 +77,14 @@ class EditableDependentDynamicListField extends EditableDropdown
             }
         }
 
-        $fields->addFieldToTab('Root.Main', DropdownField::create('SourceList', _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'), $options));
+        $fields->addFieldToTab(
+            'Root.Main',
+            DropdownField::create(
+                'SourceList',
+                _t('EditableDependentDynamicListField.SOURCE_LIST_TITLE', 'Source List'),
+                $options
+            )
+        );
 
         return $fields;
     }
@@ -96,7 +103,7 @@ class EditableDependentDynamicListField extends EditableDropdown
             }
         }
 
-        $optionLists = array();
+        $optionLists = [];
         if ($source) {
             // all our potential lists come from the source list's dynamic list source, so we need to go load that
             // first, then iterate it and build all the additional required lists
@@ -115,19 +122,24 @@ class EditableDependentDynamicListField extends EditableDropdown
             }
 
             if (count($optionLists)) {
-                $field = DependentDynamicListDropdownField::create($this->Name, $this->Title, $optionLists, $source->Name)->addExtraClass('uf-dependentdynamiclistdropdown');
+                $field = DependentDynamicListDropdownField::create(
+                    $this->Name,
+                    $this->Title,
+                    $optionLists,
+                    $source->Name
+                )->addExtraClass('uf-dependentdynamiclistdropdown');
             } else {
-                $field = DropdownField::create($this->Name, $this->Title, array());
+                $field = DropdownField::create($this->Name, $this->Title, []);
             }
             $field
                 ->setFieldHolderTemplate(EditableFormField::class . '_holder')
-                ->setTemplate(__CLASS__);
+                ->setTemplate(self::class);
             $this->doUpdateFormField($field);
             return $field;
         }
 
 
         // return a new list
-        return new LiteralField($this->Name);
+        return LiteralField::create($this->Name, 'no source list found');
     }
 }
